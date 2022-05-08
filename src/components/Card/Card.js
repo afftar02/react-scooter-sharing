@@ -16,7 +16,7 @@ function Card({imageUrl, locationName, battery, model, onClick}){
                     <span>{battery}%</span>
                 </div>
             </div>
-            <button>Choose</button>
+            <button onClick={onClick}>Choose</button>
         </div>
     );
 }

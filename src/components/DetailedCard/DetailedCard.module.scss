@@ -6,7 +6,6 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
-    // display: none;
 }
 
 .detailedCard {
@@ -17,25 +16,141 @@
     border-radius: 25px;
     display: flex;
 
-    img{
+    img {
         margin: 5%;
     }
 
-    .container{
+    .detailedCardHeader{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .cross{
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+            path{
+                fill: darkgreen;
+            }
+            &:hover{
+                transform: rotate(90deg);
+            }
+        }
+    }
+
+    .container {
         flex-grow: 1;
 
-        .info{
+        .info {
             border-bottom: 2px solid gray;
             margin: 0 10%;
 
-            p{
+            p {
                 margin: 0;
                 margin-bottom: 10px;
             }
         }
 
-        .inputBlock{
+        .inputBlock {
+            .input {
+                margin: 5% 5%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                span {
+                    align-self: baseline;
+                    font-weight: 500;
+                }
+                .select {
+                    margin: 0 1%;
+                }
+                input {
+                    margin-right: 5%;
+                    border-radius: 10px;
+                    padding: 1%;
+                    padding-left: 5%;
+                    border: 1px solid darkgreen;
+                    transition: box-shadow 0.2s ease-in-out;
+                    &:focus {
+                        box-shadow: 0px 20px 35px rgba(0, 0, 0, 0.15);
+                    }
+                }
+                .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 45px;
+                    height: 23px;
+                    input {
+                        display: none;
+                    }
+                    .slider {
+                        position: absolute;
+                        cursor: pointer;
+                        margin-top: 5%;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-color: darkgreen;
+                        -webkit-transition: 0.4s;
+                        transition: 0.4s;
+                        border-radius: 34px;
+                    }
+                    .slider::before {
+                        position: absolute;
+                        content: "";
+                        height: 15px;
+                        width: 15px;
+                        left: 3px;
+                        bottom: 3px;
+                        background-color: white;
+                        -webkit-transition: 0.4s;
+                        transition: 0.4s;
+                        border-radius: 50%;
+                    }
+                    input:checked + .slider:before {
+                        -webkit-transform: translateX(23px);
+                        -ms-transform: translateX(23px);
+                        transform: translateX(23px);
+                    }
+                }
+            }
 
+            button {
+                display: inline-block;
+                margin-left: 60%;
+                width: 85px;
+                height: 30px;
+                border-radius: 20px;
+                cursor: pointer;
+                border: 1px solid darkgreen;
+                color: #f3f3f3;
+                background-color: darkgreen;
+                text-align: left;
+                padding: 0 15px;
+                transition: background-color 0.2s ease-in-out,color 0.2s ease-in-out;
+                position: relative;
+
+                svg {
+                    position: absolute;
+                    right: 13px;
+                    top: 7px;
+                    transition: transform 0.2s ease-in-out;
+                    path{
+                        transition: stroke 0.2s ease-in-out;
+                    }
+                }
+
+                &:hover {
+                    background-color: lightgreen;
+                    color: darkgreen;
+
+                    svg {
+                        transform: translateX(5px);
+                        path{
+                            stroke: darkgreen;
+                        }
+                    }
+                }
+            }
         }
     }
 }
