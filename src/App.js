@@ -42,8 +42,13 @@ function App() {
                 onClick={() => onCardClick(item)}
               />
               {
-                isItemChosen.find(x => x[0] === item.scooterId)[1] &&
+                isItemChosen.find(x => x[0] === item.scooterId)?.at(1) &&
                 <DetailedCard
+                  imageUrl={item.imageURL}
+                  modelName={item.modelName}
+                  locationName={item.location.name}
+                  locationDescription={item.location.description}
+                  battery={item.battery}
                   onClose={() => onDetailedCardCross(item)}
                 />
               }
