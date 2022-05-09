@@ -1,8 +1,18 @@
 import Home from "./pages/Home";
+import Header from "./components/Header";
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
-    <Home/>
+    <div className="wrapper">
+      <Header />
+      <Routes></Routes>
+        <Route
+          exact path="/home"
+          element={<Home />}
+        />
+      </Routes>
+    </div>
   );
 }
 
