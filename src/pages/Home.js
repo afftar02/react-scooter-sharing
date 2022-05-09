@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from "../components/Header";
 import Card from "../components/Card/Card";
 import DetailedCard from "../components/DetailedCard/DetailedCard";
 
@@ -21,34 +20,31 @@ function Home() {
     };
 
     return (
-        <div className="wrapper">
-            <Header />
-            <div className="content">
-                <h1>Available scooters:</h1>
-                <div className="items-block">
-                    {items.map((item) => (
-                        <div key={item.scooterId}>
-                            <Card
+        <div className="content">
+            <h1>Available scooters:</h1>
+            <div className="items-block">
+                {items.map((item) => (
+                    <div key={item.scooterId}>
+                        <Card
+                            imageUrl={item.imageURL}
+                            locationName={item.location.name}
+                            battery={item.battery}
+                            model={item.modelName}
+                            onClick={() => onCardClick(item)}
+                        />
+                        {
+                            itemChosen === item.scooterId &&
+                            <DetailedCard
                                 imageUrl={item.imageURL}
+                                modelName={item.modelName}
                                 locationName={item.location.name}
+                                locationDescription={item.location.description}
                                 battery={item.battery}
-                                model={item.modelName}
-                                onClick={() => onCardClick(item)}
+                                onClose={onDetailedCardCross}
                             />
-                            {
-                                itemChosen === item.scooterId &&
-                                <DetailedCard
-                                    imageUrl={item.imageURL}
-                                    modelName={item.modelName}
-                                    locationName={item.location.name}
-                                    locationDescription={item.location.description}
-                                    battery={item.battery}
-                                    onClose={onDetailedCardCross}
-                                />
-                            }
-                        </div>
-                    ))}
-                </div>
+                        }
+                    </div>
+                ))}
             </div>
         </div>
     );

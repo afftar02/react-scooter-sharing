@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="wrapper">
       <Header />
-      <Routes></Routes>
+      <Routes>
         <Route
           exact path="/home"
           element={<Home />}
