@@ -1,0 +1,47 @@
+.cardContainer {
+    border: 1px solid darkgreen;
+    border-radius: 15px;
+    height: 70px;
+    padding-left: 10px;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    .scooterImage {
+        height: 60px;
+        display: block;
+    }
+    .leftPartContainer{
+        display: flex;
+        align-items: center;
+        width: 180px;
+        justify-content: space-between;
+    }
+    .rightPartContainer{
+        display: flex;
+        align-items: center;
+        width: 250px;
+        justify-content: space-between;
+        .batteryBlock{
+            display: flex;
+            align-items: center;
+            width: 57px;
+            justify-content: space-between;
+        }
+        .stopButton{
+            width: 80px;
+            height: 25px;
+            background-color: lightgreen;
+            color: darkgreen;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            &:hover{
+                background-color:seagreen;
+                color: white;
+            }
+        }
+    }
+}
