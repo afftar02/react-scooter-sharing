@@ -1,7 +1,15 @@
 import React from 'react';
 import styles from "./UserScooterCard.module.scss";
+import { AppContext } from "../../App";
 
-export const UserScooterCard = ({ imageUrl, battery, model }) => {
+export const UserScooterCard = ({ id, imageUrl, battery, model }) => {
+
+  const { setScooterChosenId } = React.useContext(AppContext);
+
+  const onStopClick = () => {
+    setScooterChosenId();
+  }
+
   return (
     <div className={styles.cardContainer}>
       <div className={styles.leftPartContainer}>
@@ -14,7 +22,7 @@ export const UserScooterCard = ({ imageUrl, battery, model }) => {
           <span>{battery}%</span>
         </div>
         <span>20:45</span>
-        <button className={styles.stopButton}>Stop</button>
+        <button className={styles.stopButton} onClick={onStopClick}>Stop</button>
       </div>
     </div>
   )

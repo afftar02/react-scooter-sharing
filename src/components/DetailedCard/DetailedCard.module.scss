@@ -20,17 +20,17 @@
         margin: 5%;
     }
 
-    .detailedCardHeader{
+    .detailedCardHeader {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        .cross{
+        .cross {
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
-            path{
+            path {
                 fill: darkgreen;
             }
-            &:hover{
+            &:hover {
                 transform: rotate(90deg);
             }
         }
@@ -114,9 +114,14 @@
                 }
             }
 
+            .buttonStartContainer {
+                display: flex;
+                justify-content: flex-end;
+                padding-right: 30px;
+            }
+
             button {
                 display: inline-block;
-                margin-left: 60%;
                 width: 85px;
                 height: 30px;
                 border-radius: 20px;
@@ -126,7 +131,7 @@
                 background-color: darkgreen;
                 text-align: left;
                 padding: 0 15px;
-                transition: background-color 0.2s ease-in-out,color 0.2s ease-in-out;
+                transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
                 position: relative;
 
                 svg {
@@ -134,7 +139,7 @@
                     right: 13px;
                     top: 7px;
                     transition: transform 0.2s ease-in-out;
-                    path{
+                    path {
                         transition: stroke 0.2s ease-in-out;
                     }
                 }
@@ -145,7 +150,7 @@
 
                     svg {
                         transform: translateX(5px);
-                        path{
+                        path {
                             stroke: darkgreen;
                         }
                     }

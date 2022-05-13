@@ -1,6 +1,26 @@
+import { Link } from "react-router-dom";
+import React from "react";
 import styles from "./DetailedCard.module.scss";
+import { AppContext } from "../../App";
 
-function DetailedCard({imageUrl, modelName, locationName, locationDescription, battery, onClose}) {
+function DetailedCard({ id, imageUrl, modelName, locationName, locationDescription, battery, onClose }) {
+
+    const [rentalTime,setRentalTime] = React.useState(0);
+    const [isMinTimeUnit,setIsMinTimeUnit] = React.useState(true);
+    const { setScooterChosenId } = React.useContext(AppContext);
+
+    const onStartClick = () => {
+        setScooterChosenId(id);
+    }
+
+    const onTimeEntered = (event) => {
+        setRentalTime(event.target.value);
+    }
+
+    const onTimeUnitSwitched = () => {
+        setIsMinTimeUnit(!isMinTimeUnit);
+    }
+
     return (
         <div className={styles.overlay}>
             <div className={styles.detailedCard}>
@@ -20,20 +40,24 @@ function DetailedCard({imageUrl, modelName, locationName, locationDescription, b
                     </div>
                     <div className={styles.inputBlock}>
                         <div className={styles.input}>
-                            <input type="text" placeholder="Enter rental time" />
+                            <input onChange={onTimeEntered} type="text" placeholder="Enter rental time" />
                             <span>min</span>
                             <div className={styles.select}>
                                 <label className={styles.switch}>
-                                    <input type="checkbox" />
+                                    <input type="checkbox" onChange={onTimeUnitSwitched}/>
                                     <span className={styles.slider} />
                                 </label>
                             </div>
                             <span>h</span>
                         </div>
-                        <button>Finish<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 7H14.7143" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M8.71436 1L14.7144 7L8.71436 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg></button>
+                        <div className={styles.buttonStartContainer}>
+                            <Link to="/user">
+                                <button onClick={onStartClick}>Start<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 7H14.7143" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M8.71436 1L14.7144 7L8.71436 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg></button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
