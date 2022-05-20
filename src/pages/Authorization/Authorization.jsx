@@ -12,7 +12,7 @@ export const Authorization = () => {
   const [password, setPassword] = React.useState();
   const [errorMessage, setErrorMessage] = React.useState();
 
-  let { userId } = React.useContext(AppContext);
+  const { setUserId } = React.useContext(AppContext);
 
   const onEmailInputChanged = (event) => {
     setEmail(event.target.value);
@@ -27,7 +27,7 @@ export const Authorization = () => {
       try {
         const { data } = await axios.get("http://localhost:8080/scooter-sharing/api/user");
         if (data.find(user => user.email === email && user.password === password)) {
-          userId = data.find(user => user.email === email && user.password === password).userId;
+          setUserId(data.find(user => user.email === email && user.password === password).id);
           navigate('/home');
         }
         else {

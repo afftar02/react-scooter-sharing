@@ -1,13 +1,10 @@
 import React from 'react';
 import styles from "./UserScooterCard.module.scss";
-import { AppContext } from "../../App";
 
 export const UserScooterCard = ({ id, imageUrl, battery, model }) => {
 
-  const { setScooterChosenId } = React.useContext(AppContext);
-
   const onStopClick = () => {
-    setScooterChosenId();
+    
   }
 
   return (

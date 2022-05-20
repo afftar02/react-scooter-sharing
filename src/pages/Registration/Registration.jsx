@@ -14,7 +14,7 @@ export const Registration = () => {
     const [password, setPassword] = React.useState();
     const [errorMessage, setErrorMessage] = React.useState();
 
-    let { userId } = React.useContext(AppContext);
+    const { setUserId } = React.useContext(AppContext);
 
     const onFirstNameChange = (event) => {
         setFirstName(event.target.value);
@@ -35,14 +35,14 @@ export const Registration = () => {
     const onRegisterClick = () => {
         async function Register() {
             try {
-              const response = await axios.post("http://localhost:8080/scooter-sharing/api/user",{ firstName, secondName, email, password });;
-              userId = response.data.userId;
-              navigate('/home');
+                const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, email, password });
+                setUserId(response.data.userId);
+                navigate('/home');
             } catch (error) {
-              setErrorMessage("Ошибка регистрации!");
+                setErrorMessage("Ошибка регистрации!");
             }
-          }
-          Register();
+        }
+        Register();
     }
 
     return (

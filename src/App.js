@@ -10,12 +10,10 @@ export const AppContext = React.createContext({});
 
 function App() {
 
-  let userId;
-
-  const [scooterChosenId,setScooterChosenId] = React.useState();
+  const [ userId, setUserId ] = React.useState();  
 
   return (
-    <AppContext.Provider value={{scooterChosenId, setScooterChosenId, userId}}>
+    <AppContext.Provider value={{ userId, setUserId }}>
       <div className="wrapper">
         <Header />
         <Routes>

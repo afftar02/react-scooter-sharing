@@ -1,42 +1,51 @@
+import axios from 'axios';
 import React from 'react';
 import Card from "../components/Card/Card";
 import DetailedCard from "../components/DetailedCard/DetailedCard";
 
 function Home() {
     const [itemChosen, setItemChosen] = React.useState();
-
-    const items = [
-        { "scooterId": "1", "location": { "name": "Grodno", "description": "GRSU building" }, "battery": 100.0, "imageURL": "img/xiaomi-scooter-1.png", "modelName": "Xiaomi model 228", "booked": false },
-        { "scooterId": "2", "location": { "name": "LA", "description": "Venice beach" }, "battery": 85.0, "imageURL": "img/xiaomi-scooter-1.png", "modelName": "Xiaomi model 123", "booked": false },
-        { "scooterId": "3", "location": { "name": "Sydney", "description": "Sydney bridge" }, "battery": 30.0, "imageURL": "img/xiaomi-scooter-1.png", "modelName": "Xiaomi model 337", "booked": false }
-    ];
+    const [items, setItems] = React.useState();
 
     const onCardClick = (item) => {
-        setItemChosen(item.scooterId);
+        setItemChosen(item.id);
     };
 
     const onDetailedCardCross = () => {
         setItemChosen();
     };
 
+    React.useEffect(() => {
+        async function getItemsFromServer() {
+            try {
+                const { data } = await axios.get('http://localhost:8080/scooter-sharing/api/scooters');
+                setItems(data);
+            } catch (error) {
+                alert('Ошибка загрузки данных!');
+            }
+        }
+        getItemsFromServer();
+    }, []);
+
     return (
         <div className="content">
             <h1>Available scooters:</h1>
             <div className="items-block">
-                {items.map((item) => (
-                    <div key={item.scooterId}>
+                {items && items.map((item) => (
+                    !item.booked && 
+                    <div key={item.id}>
                         <Card
-                            imageUrl={item.imageURL}
+                            imageUrl={item.imageUrl}
                             locationName={item.location.name}
                             battery={item.battery}
                             model={item.modelName}
                             onClick={() => onCardClick(item)}
                         />
-                        {
-                            itemChosen === item.scooterId &&
+                        { 
+                            itemChosen === item.id &&
                             <DetailedCard
-                                id={item.scooterId}
-                                imageUrl={item.imageURL}
+                                id={item.id}
+                                imageUrl={item.imageUrl}
                                 modelName={item.modelName}
                                 locationName={item.location.name}
                                 locationDescription={item.location.description}

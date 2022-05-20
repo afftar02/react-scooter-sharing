@@ -1,16 +1,27 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import styles from "./DetailedCard.module.scss";
+import axios from "axios";
 import { AppContext } from "../../App";
 
 function DetailedCard({ id, imageUrl, modelName, locationName, locationDescription, battery, onClose }) {
 
-    const [rentalTime,setRentalTime] = React.useState(0);
-    const [isMinTimeUnit,setIsMinTimeUnit] = React.useState(true);
-    const { setScooterChosenId } = React.useContext(AppContext);
+    const [rentalTime, setRentalTime] = React.useState(0);
+    const [isMinTimeUnit, setIsMinTimeUnit] = React.useState(true);
 
-    const onStartClick = () => {
-        setScooterChosenId(id);
+    const { userId } = React.useContext(AppContext);
+
+    const onStartClick = async () => {
+        try {
+            const scooterResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/scooters/${id}`);
+            axios.put('http://localhost:8080/scooter-sharing/api/scooters',
+                { id, "location": { "id": scooterResponse.data.location.id, "name": locationName, "description": locationDescription }, battery, imageUrl, modelName, "booked": true });
+            const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
+            axios.put('http://localhost:8080/scooter-sharing/api/user',
+                { "id": userId, "scooters": [...userResponse.data.scooters,scooterResponse.data] });
+        } catch (error) {
+            alert('Ошибка отправки данных!');
+        }
     }
 
     const onTimeEntered = (event) => {
@@ -44,19 +55,17 @@ function DetailedCard({ id, imageUrl, modelName, locationName, locationDescripti
                             <span>min</span>
                             <div className={styles.select}>
                                 <label className={styles.switch}>
-                                    <input type="checkbox" onChange={onTimeUnitSwitched}/>
+                                    <input type="checkbox" onChange={onTimeUnitSwitched} />
                                     <span className={styles.slider} />
                                 </label>
                             </div>
                             <span>h</span>
                         </div>
                         <div className={styles.buttonStartContainer}>
-                            <Link to="/user">
-                                <button onClick={onStartClick}>Start<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1 7H14.7143" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M8.71436 1L14.7144 7L8.71436 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg></button>
-                            </Link>
+                            <button onClick={onStartClick}>Start<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 7H14.7143" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M8.71436 1L14.7144 7L8.71436 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg></button>
                         </div>
                     </div>
                 </div>
