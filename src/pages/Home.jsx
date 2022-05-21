@@ -51,6 +51,8 @@ function Home() {
                                 locationDescription={item.location.description}
                                 battery={item.battery}
                                 onClose={onDetailedCardCross}
+                                items={items}
+                                setItems={setItems}
                             />
                         }
                     </div>

@@ -41,9 +41,12 @@ export const User = () => {
       <div className={styles.userScootersContainer}>
         {userItems && userItems.map((item) => (
           <UserScooterCard
+            key={item.id}
+            id={item.id}
             imageUrl={item.imageUrl}
             battery={item.battery}
-            model={item.modelName} />
+            model={item.modelName}
+            setUserItems={setUserItems} />
         ))}
       </div>
     </div>

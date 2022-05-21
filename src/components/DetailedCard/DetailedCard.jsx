@@ -4,7 +4,7 @@ import styles from "./DetailedCard.module.scss";
 import axios from "axios";
 import { AppContext } from "../../App";
 
-function DetailedCard({ id, imageUrl, modelName, locationName, locationDescription, battery, onClose }) {
+function DetailedCard({ id, imageUrl, modelName, locationName, locationDescription, battery, onClose, items, setItems }) {
 
     const [rentalTime, setRentalTime] = React.useState(0);
     const [isMinTimeUnit, setIsMinTimeUnit] = React.useState(true);
@@ -18,7 +18,8 @@ function DetailedCard({ id, imageUrl, modelName, locationName, locationDescripti
                 { id, "location": { "id": scooterResponse.data.location.id, "name": locationName, "description": locationDescription }, battery, imageUrl, modelName, "booked": true });
             const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
             axios.put('http://localhost:8080/scooter-sharing/api/user',
-                { "id": userId, "scooters": [...userResponse.data.scooters,scooterResponse.data] });
+                { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] });
+            setItems(items.filter(item => item.id !== id));
         } catch (error) {
             alert('Ошибка отправки данных!');
         }
