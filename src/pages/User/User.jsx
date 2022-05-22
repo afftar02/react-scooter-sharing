@@ -8,27 +8,34 @@ import { useNavigate } from 'react-router-dom';
 export const User = () => {
 
   const [userItems, setUserItems] = React.useState();
-  const [userName,setUserName] = React.useState();
-  const [userEmail,setUserEmail] = React.useState();
+  const [userName, setUserName] = React.useState();
+  const [userEmail, setUserEmail] = React.useState();
 
-  const { userId,setUserId } = React.useContext(AppContext);
+  const { userId, setUserId } = React.useContext(AppContext);
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    async function getUserScooters() {
-      try {
-        const { data } = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
-        setUserName(data.firstName + " " + data.secondName);
-        setUserEmail(data.email);
-        if (data.scooters.length > 0) {
-          setUserItems(data.scooters);
-        }
-      } catch (error) {
-        alert('Data loading error!');
+  async function getUserScooters() {
+    try {
+      const { data } = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
+      setUserName(data.firstName + " " + data.secondName);
+      setUserEmail(data.email);
+      if (data.scooters.length > 0) {
+        setUserItems(data.scooters);
       }
+    } catch (error) {
+      alert('Data loading error!');
     }
-    getUserScooters();
+  }
+
+  React.useEffect(() => {
+    if (userId) {
+      getUserScooters();
+    }
+    else {
+      navigate('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLogOffClick = () => {
