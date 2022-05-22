@@ -3,7 +3,7 @@ import styles from "./UserScooterCard.module.scss";
 import { AppContext } from "../../App";
 import axios from 'axios';
 
-export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) => {
+export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems }) => {
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
   const [height, setHeight] = React.useState();
@@ -13,14 +13,6 @@ export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) 
   const [locationDescription,setLocationDescription] = React.useState();
 
   const { userId } = React.useContext(AppContext);
-
-  const onLocationNameChange = (event) => {
-    setLocationName(event.target.value);
-  }
-
-  const onLocationDescriptionChange = (event) => {
-    setLocationDescription(event.target.value);
-  }
 
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
@@ -51,7 +43,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) 
       <div className={styles.shortCardContainer}>
         <div className={styles.leftPartContainer}>
           <img className={styles.scooterImage} src={imageUrl} alt="scooter" />
-          <p>{model}</p>
+          <p>{modelName}</p>
         </div>
         <div className={styles.rightPartContainer}>
           <div className={styles.batteryBlock}>
@@ -66,8 +58,8 @@ export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) 
         <h4>Enter new location for scooter:</h4>
         <p>{warningMessage}</p>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="Location name" onChange={onLocationNameChange} />
-          <textarea placeholder="Location description" onChange={onLocationDescriptionChange} />
+          <input type="text" placeholder="Location name" onChange={(event) => setLocationName(event.target.value)} />
+          <textarea placeholder="Location description" onChange={(event) => setLocationDescription(event.target.value)} />
         </div>
       </div>
     </div>

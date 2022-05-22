@@ -13,14 +13,6 @@ function Home() {
 
     const { userId } = React.useContext(AppContext);
 
-    const onCardClick = (item) => {
-        setItemChosen(item.id);
-    };
-
-    const onDetailedCardCross = () => {
-        setItemChosen();
-    };
-
     async function getItemsFromServer() {
         try {
             const { data } = await axios.get('http://localhost:8080/scooter-sharing/api/scooters');
@@ -52,18 +44,13 @@ function Home() {
                             locationName={item.location.name}
                             battery={item.battery}
                             model={item.modelName}
-                            onClick={() => onCardClick(item)}
+                            onClick={() => setItemChosen(item.id)}
                         />
                         {
                             itemChosen === item.id &&
                             <DetailedCard
-                                id={item.id}
-                                imageUrl={item.imageUrl}
-                                modelName={item.modelName}
-                                locationName={item.location.name}
-                                locationDescription={item.location.description}
-                                battery={item.battery}
-                                onClose={onDetailedCardCross}
+                                {...item}
+                                onClose={() => setItemChosen()}
                                 items={items}
                                 setItems={setItems}
                             />

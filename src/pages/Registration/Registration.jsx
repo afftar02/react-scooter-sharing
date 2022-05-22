@@ -16,33 +16,14 @@ export const Registration = () => {
 
     const { setUserId } = React.useContext(AppContext);
 
-    const onFirstNameChange = (event) => {
-        setFirstName(event.target.value);
-    }
-
-    const onSecondNameChange = (event) => {
-        setSecondName(event.target.value);
-    }
-
-    const onEmailChange = (event) => {
-        setEmail(event.target.value);
-    }
-
-    const onPasswordChange = (event) => {
-        setPassword(event.target.value);
-    }
-
-    const onRegisterClick = () => {
-        async function Register() {
-            try {
-                const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, email, password });
-                setUserId(response.data.id);
-                navigate('/home');
-            } catch (error) {
-                setErrorMessage("Registration error!");
-            }
+    async function Register() {
+        try {
+            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, email, password });
+            setUserId(response.data.id);
+            navigate('/home');
+        } catch (error) {
+            setErrorMessage("Registration error!");
         }
-        Register();
     }
 
     return (
@@ -51,11 +32,11 @@ export const Registration = () => {
                 <h2>Registration scooter-sharing</h2>
                 <div className={styles.inputContainer}>
                     <p className={styles.errorMessage}>{errorMessage}</p>
-                    <input type="text" placeholder="First name" onChange={onFirstNameChange} />
-                    <input type="text" placeholder="Second name" onChange={onSecondNameChange} />
-                    <input type="email" placeholder="Email address" onChange={onEmailChange} />
-                    <input type="password" placeholder="Password" onChange={onPasswordChange} />
-                    <button onClick={onRegisterClick}>Register</button>
+                    <input type="text" placeholder="First name" onChange={(event) => setFirstName(event.target.value)} />
+                    <input type="text" placeholder="Second name" onChange={(event) => setSecondName(event.target.value)} />
+                    <input type="email" placeholder="Email address" onChange={(event) => setEmail(event.target.value)} />
+                    <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+                    <button onClick={Register}>Register</button>
                 </div>
             </div>
         </div>

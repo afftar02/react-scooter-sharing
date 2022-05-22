@@ -3,7 +3,7 @@ import styles from "./DetailedCard.module.scss";
 import axios from "axios";
 import { AppContext } from "../../App";
 
-function DetailedCard({ id, imageUrl, modelName, locationName, locationDescription, battery, onClose, items, setItems }) {
+function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, items, setItems }) {
 
     const [rentalTime, setRentalTime] = React.useState(0);
     const [isMinTimeUnit, setIsMinTimeUnit] = React.useState(true);
@@ -14,7 +14,7 @@ function DetailedCard({ id, imageUrl, modelName, locationName, locationDescripti
         try {
             const scooterResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/scooters/${id}`);
             axios.put('http://localhost:8080/scooter-sharing/api/scooters',
-                { id, "location": { "id": scooterResponse.data.location.id, "name": locationName, "description": locationDescription }, battery, imageUrl, modelName, "booked": true });
+                { id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true });
             const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
             axios.put('http://localhost:8080/scooter-sharing/api/user',
                 { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] });
@@ -22,14 +22,6 @@ function DetailedCard({ id, imageUrl, modelName, locationName, locationDescripti
         } catch (error) {
             alert('Data sending error!');
         }
-    }
-
-    const onTimeEntered = (event) => {
-        setRentalTime(event.target.value);
-    }
-
-    const onTimeUnitSwitched = () => {
-        setIsMinTimeUnit(!isMinTimeUnit);
     }
 
     return (
@@ -45,17 +37,17 @@ function DetailedCard({ id, imageUrl, modelName, locationName, locationDescripti
                             </svg>
                         </div>
                         <p>{modelName}</p>
-                        <p>{locationName}</p>
-                        <p>{locationDescription}</p>
+                        <p>{location.name}</p>
+                        <p>{location.description}</p>
                         <p>{battery}%</p>
                     </div>
                     <div className={styles.inputBlock}>
                         <div className={styles.input}>
-                            <input onChange={onTimeEntered} type="text" placeholder="Enter rental time" />
+                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" />
                             <span>min</span>
                             <div className={styles.select}>
                                 <label className={styles.switch}>
-                                    <input type="checkbox" onChange={onTimeUnitSwitched} />
+                                    <input type="checkbox" onChange={() => setIsMinTimeUnit(!isMinTimeUnit)} />
                                     <span className={styles.slider} />
                                 </label>
                             </div>
