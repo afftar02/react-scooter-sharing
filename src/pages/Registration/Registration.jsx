@@ -39,7 +39,7 @@ export const Registration = () => {
                 setUserId(response.data.userId);
                 navigate('/home');
             } catch (error) {
-                setErrorMessage("Ошибка регистрации!");
+                setErrorMessage("Registration error!");
             }
         }
         Register();

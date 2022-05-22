@@ -20,7 +20,7 @@ function DetailedCard({ id, imageUrl, modelName, locationName, locationDescripti
                 { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] });
             setItems(items.filter(item => item.id !== id));
         } catch (error) {
-            alert('Ошибка отправки данных!');
+            alert('Data sending error!');
         }
     }
 

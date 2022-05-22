@@ -23,7 +23,7 @@ export const User = () => {
           setUserItems(data.scooters);
         }
       } catch (error) {
-        alert('Ошибка загрузки данных!');
+        alert('Data loading error!');
       }
     }
     getUserScooters();

@@ -21,7 +21,7 @@ function Home() {
                 const { data } = await axios.get('http://localhost:8080/scooter-sharing/api/scooters');
                 setItems(data);
             } catch (error) {
-                alert('Ошибка загрузки данных!');
+                alert('Data loading error!');
             }
         }
         getItemsFromServer();

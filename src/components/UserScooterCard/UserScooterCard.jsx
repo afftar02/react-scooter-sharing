@@ -7,23 +7,39 @@ export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) 
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
   const [height, setHeight] = React.useState();
-  const [stopButtonTranslateY,setStopButtonTranslateY] = React.useState();
+  const [stopButtonTranslateY, setStopButtonTranslateY] = React.useState();
+  const [warningMessage,setWarningMessage] = React.useState();
+  const [locationName,setLocationName] = React.useState();
+  const [locationDescription,setLocationDescription] = React.useState();
 
   const { userId } = React.useContext(AppContext);
 
+  const onLocationNameChange = (event) => {
+    setLocationName(event.target.value);
+  }
+
+  const onLocationDescriptionChange = (event) => {
+    setLocationDescription(event.target.value);
+  }
+
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
-      try {
-        axios.put('http://localhost:8080/scooter-sharing/api/scooters', { id, "booked": false });
-        const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
-        const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
-        axios.put('http://localhost:8080/scooter-sharing/api/user', { "id": userId, "scooters": updatedUserScooters });
-        setUserItems(updatedUserScooters);
-      } catch (error) {
-        alert('Ошибка при удалении самоката!');
+      if (locationName && locationDescription) {
+        try {
+          axios.put('http://localhost:8080/scooter-sharing/api/scooters', { id, "location": {"name": locationName, "description": locationDescription} , "booked": false });
+          const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
+          const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
+          axios.put('http://localhost:8080/scooter-sharing/api/user', { "id": userId, "scooters": updatedUserScooters });
+          setUserItems(updatedUserScooters);
+        } catch (error) {
+          alert('Error when deleting scooter!');
+        }
+      }
+      else{
+        setWarningMessage('Please, enter new location for scooter!');
       }
     }
-    else{
+    else {
       setIsHiddenInputOpened(true);
       setHeight('210px');
       setStopButtonTranslateY('140px');
@@ -31,7 +47,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) 
   }
 
   return (
-    <div className={styles.cardContainer}  style={{ height: height }}>
+    <div className={styles.cardContainer} style={{ height: height }}>
       <div className={styles.shortCardContainer}>
         <div className={styles.leftPartContainer}>
           <img className={styles.scooterImage} src={imageUrl} alt="scooter" />
@@ -43,14 +59,15 @@ export const UserScooterCard = ({ id, imageUrl, battery, model, setUserItems }) 
             <span>{battery}%</span>
           </div>
           <span>20:45</span>
-          <button className={styles.stopButton} onClick={onStopClick} style={{transform:`translateY(${stopButtonTranslateY})`}}>Stop</button>
+          <button className={styles.stopButton} onClick={onStopClick} style={{ transform: `translateY(${stopButtonTranslateY})` }}>Stop</button>
         </div>
       </div>
       <div className={styles.locationHiddenContainer}>
         <h4>Enter new location for scooter:</h4>
+        <p>{warningMessage}</p>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="Location name" />
-          <textarea placeholder="Location description" />
+          <input type="text" placeholder="Location name" onChange={onLocationNameChange} />
+          <textarea placeholder="Location description" onChange={onLocationDescriptionChange} />
         </div>
       </div>
     </div>

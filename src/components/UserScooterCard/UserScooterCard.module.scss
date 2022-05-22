@@ -55,8 +55,13 @@
         border-top: 2px solid gray;
         margin: 20px 0;
         h4 {
-            display: block;
+            display: inline-block;
             margin: 15px 0;
+            margin-right: 30px;
+        }
+        p{
+            color: red;
+            display: inline-block;
         }
         .inputContainer {
             display: flex;

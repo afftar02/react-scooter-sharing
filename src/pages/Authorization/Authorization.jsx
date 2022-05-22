@@ -31,10 +31,10 @@ export const Authorization = () => {
           navigate('/home');
         }
         else {
-          setErrorMessage("Данные введены неверно!");
+          setErrorMessage("Data entered incorrectly!");
         }
       } catch (error) {
-        setErrorMessage("Ошибка авторизации!");
+        setErrorMessage("Authorization Error!");
       }
     }
     isRightAuthorization();
