@@ -1,18 +1,34 @@
-.userContent{
+.userContent {
     padding: 40px;
-    .userInfoContainer{
+    .userInfoContainer {
         border: 1px solid grey;
         border-radius: 15px;
-        .infoItem{
+        .infoItem {
             list-style: none;
             margin-top: 10px;
         }
-        h3{
+        h3 {
             padding-left: 40px;
             margin-bottom: 0;
         }
+        .logOffButton {
+            margin-left: 40px;
+            margin-bottom: 15px;
+            width: 80px;
+            height: 25px;
+            background-color: lightgreen;
+            color: darkgreen;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 1s ease-in-out;
+            &:hover {
+                background-color: seagreen;
+                color: white;
+            }
+        }
     }
-    .userScootersContainer{
+    .userScootersContainer {
         margin-top: 30px;
     }
 }

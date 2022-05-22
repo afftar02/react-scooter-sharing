@@ -45,12 +45,7 @@ export const Authorization = () => {
       <div className={styles.block}>
         <h2>Log in to scooter-sharing</h2>
         <div className={styles.inputContainer}>
-          {
-            errorMessage && 
-            <p className={styles.errorMessage}>
-              {errorMessage}
-            </p>
-          }
+          <p className={styles.errorMessage}>{errorMessage}</p>
           <input type="email" placeholder="Email address" onChange={onEmailInputChanged} />
           <input type="password" placeholder="Password" onChange={onPasswordInputChanged} />
           <button className={styles.logInButton} onClick={logInClick}>Log In</button>

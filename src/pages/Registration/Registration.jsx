@@ -36,7 +36,7 @@ export const Registration = () => {
         async function Register() {
             try {
                 const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, email, password });
-                setUserId(response.data.userId);
+                setUserId(response.data.id);
                 navigate('/home');
             } catch (error) {
                 setErrorMessage("Registration error!");
@@ -49,13 +49,8 @@ export const Registration = () => {
         <div className={styles.overlay}>
             <div className={styles.block}>
                 <h2>Registration scooter-sharing</h2>
-                {
-                    errorMessage &&
-                    <p className={styles.errorMessage}>
-                        {errorMessage}
-                    </p>
-                }
                 <div className={styles.inputContainer}>
+                    <p className={styles.errorMessage}>{errorMessage}</p>
                     <input type="text" placeholder="First name" onChange={onFirstNameChange} />
                     <input type="text" placeholder="Second name" onChange={onSecondNameChange} />
                     <input type="email" placeholder="Email address" onChange={onEmailChange} />
