@@ -18,7 +18,7 @@ export const Registration = () => {
 
     async function Register() {
         try {
-            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, email, password });
+            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user/create", { firstName, secondName, email, password });
             setUserId(response.data.id);
             navigate('/home');
         } catch (error) {

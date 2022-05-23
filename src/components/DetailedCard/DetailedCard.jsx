@@ -13,10 +13,10 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
     const onStartClick = async () => {
         try {
             const scooterResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/scooters/${id}`);
-            axios.put('http://localhost:8080/scooter-sharing/api/scooters',
+            axios.put('http://localhost:8080/scooter-sharing/api/scooters/update',
                 { id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true });
             const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
-            axios.put('http://localhost:8080/scooter-sharing/api/user',
+            axios.put('http://localhost:8080/scooter-sharing/api/user/update',
                 { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] });
             setItems(items.filter(item => item.id !== id));
         } catch (error) {

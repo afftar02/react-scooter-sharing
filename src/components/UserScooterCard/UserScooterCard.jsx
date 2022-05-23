@@ -18,10 +18,10 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
     if (isHiddenInputOpened) {
       if (locationName && locationDescription) {
         try {
-          axios.put('http://localhost:8080/scooter-sharing/api/scooters', { id, "location": {"name": locationName, "description": locationDescription} , "booked": false });
+          axios.put('http://localhost:8080/scooter-sharing/api/scooters/update', { id, "location": {"name": locationName, "description": locationDescription} , "booked": false });
           const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
           const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
-          axios.put('http://localhost:8080/scooter-sharing/api/user', { "id": userId, "scooters": updatedUserScooters });
+          axios.put('http://localhost:8080/scooter-sharing/api/user/update', { "id": userId, "scooters": updatedUserScooters });
           setUserItems(updatedUserScooters);
         } catch (error) {
           alert('Error when deleting scooter!');
