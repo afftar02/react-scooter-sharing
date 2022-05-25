@@ -26,7 +26,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                     Authorization: access_token
                 },
                 data: {
-                    "dto": { id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true }
+                    id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true
                 }
             });
             const userResponse = await axios({
@@ -43,7 +43,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                     Authorization: access_token
                 },
                 data: {
-                    "dto": { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] }
+                    "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data]
                 }
             });
             setItems(items.filter(item => item.id !== id));

@@ -25,7 +25,7 @@ export const User = () => {
         }
       });
       setUserName(userResponse.data.firstName + " " + userResponse.data.secondName);
-      setUserEmail(userResponse.data.email);
+      setUserEmail(userResponse.data.username);
       if (userResponse.data.scooters.length > 0) {
         setUserItems(userResponse.data.scooters);
       }

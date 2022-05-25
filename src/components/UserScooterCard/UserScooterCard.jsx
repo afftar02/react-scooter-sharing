@@ -25,7 +25,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
               Authorization: access_token
             },
             data: {
-              "dto": { id, "location": { "name": locationName, "description": locationDescription }, "booked": false }
+              id, "location": { "name": locationName, "description": locationDescription }, "booked": false
             }
           });
           const userResponse = await axios({
@@ -43,7 +43,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
               Authorization: access_token
             },
             data: {
-              "dto": { "id": userId, "scooters": updatedUserScooters }
+              "id": userId, "scooters": updatedUserScooters
             }
           });
           setUserItems(updatedUserScooters);
