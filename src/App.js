@@ -11,9 +11,11 @@ export const AppContext = React.createContext({});
 function App() {
 
   const [ userId, setUserId ] = React.useState();  
+  const [ access_token, setAccess_token ] = React.useState();
+  const [ refresh_token, setRefresh_token ] = React.useState();
 
   return (
-    <AppContext.Provider value={{ userId, setUserId }}>
+    <AppContext.Provider value={{ userId, setUserId, access_token, setAccess_token, refresh_token, setRefresh_token }}>
       <div className="wrapper">
         <Header />
         <Routes>

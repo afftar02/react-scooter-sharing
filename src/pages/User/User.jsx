@@ -29,13 +29,7 @@ export const User = () => {
   }
 
   React.useEffect(() => {
-    if (userId) {
-      getUserScooters();
-    }
-    else {
-      navigate('/');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getUserScooters();
   }, []);
 
   const onLogOffClick = () => {

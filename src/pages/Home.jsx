@@ -2,16 +2,10 @@ import axios from 'axios';
 import React from 'react';
 import Card from "../components/Card/Card";
 import DetailedCard from "../components/DetailedCard/DetailedCard";
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../App';
 
 function Home() {
     const [itemChosen, setItemChosen] = React.useState();
     const [items, setItems] = React.useState();
-
-    const navigate = useNavigate();
-
-    const { userId } = React.useContext(AppContext);
 
     async function getItemsFromServer() {
         try {
@@ -23,13 +17,7 @@ function Home() {
     }
 
     React.useEffect(() => {
-        if (userId) {
-            getItemsFromServer();
-        }
-        else {
-            navigate('/');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        getItemsFromServer();
     }, []);
 
     return (

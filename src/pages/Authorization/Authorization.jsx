@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import qs from 'qs';
 import styles from "./Authorization.module.scss";
 import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from "../../App";
@@ -8,22 +9,36 @@ export const Authorization = () => {
 
   const navigate = useNavigate();
 
-  const [email, setEmail] = React.useState();
+  const [username, setUsername] = React.useState();
   const [password, setPassword] = React.useState();
   const [errorMessage, setErrorMessage] = React.useState();
 
-  const { setUserId } = React.useContext(AppContext);
+  const { setUserId, setAccess_token, setRefresh_token } = React.useContext(AppContext);
 
   async function isRightAuthorization() {
     try {
-      const { data } = await axios.get("http://localhost:8080/scooter-sharing/api/user");
-      if (data.find(user => user.email === email && user.password === password)) {
-        setUserId(data.find(user => user.email === email && user.password === password).id);
-        navigate('/home');
-      }
-      else {
-        setErrorMessage("Data entered incorrectly!");
-      }
+      const loginResponse = await axios({
+        method: 'post',
+        url: 'http://localhost:8080/scooter-sharing/api/login',
+        data: qs.stringify({
+          username: username,
+          password: password
+        }),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        }
+      });
+      const userResponse = await axios({
+        method: 'get',
+        url: `http://localhost:8080/scooter-sharing/api/user/7`,
+        headers: {
+          Authorization: "Bearer " + loginResponse.data.access_token
+        }
+      });
+      setAccess_token("Bearer " + loginResponse.data.access_token);
+      setRefresh_token("Bearer " + loginResponse.data.refresh_token);
+      setUserId(userResponse.data.id);
+      navigate('/home');
     } catch (error) {
       setErrorMessage("Authorization Error!");
     }
@@ -35,7 +50,7 @@ export const Authorization = () => {
         <h2>Log in to scooter-sharing</h2>
         <div className={styles.inputContainer}>
           <p className={styles.errorMessage}>{errorMessage}</p>
-          <input type="email" placeholder="Email address" onChange={(event) => setEmail(event.target.value)} />
+          <input type="email" placeholder="Email address" onChange={(event) => setUsername(event.target.value)} />
           <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
           <button className={styles.logInButton} onClick={isRightAuthorization}>Log In</button>
           <div className={styles.orBlock}>or</div>

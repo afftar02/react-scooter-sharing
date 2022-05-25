@@ -10,7 +10,7 @@ export const Registration = () => {
 
     const [firstName, setFirstName] = React.useState();
     const [secondName, setSecondName] = React.useState();
-    const [email, setEmail] = React.useState();
+    const [username, setUsername] = React.useState();
     const [password, setPassword] = React.useState();
     const [errorMessage, setErrorMessage] = React.useState();
 
@@ -18,7 +18,8 @@ export const Registration = () => {
 
     async function Register() {
         try {
-            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user/create", { firstName, secondName, email, password });
+            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user/create",
+                                        { firstName, secondName, username, password, "roles": [{ "name": "User" }]});
             setUserId(response.data.id);
             navigate('/home');
         } catch (error) {
@@ -34,7 +35,7 @@ export const Registration = () => {
                     <p className={styles.errorMessage}>{errorMessage}</p>
                     <input type="text" placeholder="First name" onChange={(event) => setFirstName(event.target.value)} />
                     <input type="text" placeholder="Second name" onChange={(event) => setSecondName(event.target.value)} />
-                    <input type="email" placeholder="Email address" onChange={(event) => setEmail(event.target.value)} />
+                    <input type="email" placeholder="Email address" onChange={(event) => setUsername(event.target.value)} />
                     <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
                     <button onClick={Register}>Register</button>
                 </div>
