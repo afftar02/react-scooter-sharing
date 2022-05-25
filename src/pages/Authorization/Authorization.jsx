@@ -30,7 +30,7 @@ export const Authorization = () => {
       });
       const userResponse = await axios({
         method: 'get',
-        url: `http://localhost:8080/scooter-sharing/api/user/7`,
+        url: `http://localhost:8080/scooter-sharing/api/user/username?username=${username}`,
         headers: {
           Authorization: "Bearer " + loginResponse.data.access_token
         }
