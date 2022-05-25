@@ -11,17 +11,23 @@ export const User = () => {
   const [userName, setUserName] = React.useState();
   const [userEmail, setUserEmail] = React.useState();
 
-  const { userId, setUserId } = React.useContext(AppContext);
+  const { userId, setUserId , access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
 
   const navigate = useNavigate();
 
   async function getUserScooters() {
     try {
-      const { data } = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
-      setUserName(data.firstName + " " + data.secondName);
-      setUserEmail(data.email);
-      if (data.scooters.length > 0) {
-        setUserItems(data.scooters);
+      const userResponse = await axios({
+        method: 'get',
+        url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
+        headers: {
+          Authorization: access_token
+        }
+      });
+      setUserName(userResponse.data.firstName + " " + userResponse.data.secondName);
+      setUserEmail(userResponse.data.email);
+      if (userResponse.data.scooters.length > 0) {
+        setUserItems(userResponse.data.scooters);
       }
     } catch (error) {
       alert('Data loading error!');
@@ -34,6 +40,8 @@ export const User = () => {
 
   const onLogOffClick = () => {
     setUserId();
+    setAccess_token();
+    setRefresh_token();
     navigate('/');
   }
 

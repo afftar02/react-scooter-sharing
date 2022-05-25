@@ -8,16 +8,44 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
     const [rentalTime, setRentalTime] = React.useState(0);
     const [isMinTimeUnit, setIsMinTimeUnit] = React.useState(true);
 
-    const { userId } = React.useContext(AppContext);
+    const { userId, access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
 
     const onStartClick = async () => {
         try {
-            const scooterResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/scooters/${id}`);
-            axios.put('http://localhost:8080/scooter-sharing/api/scooters/update',
-                { id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true });
-            const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
-            axios.put('http://localhost:8080/scooter-sharing/api/user/update',
-                { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] });
+            const scooterResponse = await axios({
+                method: 'get',
+                url: `http://localhost:8080/scooter-sharing/api/scooters/${id}`,
+                headers: {
+                    Authorization: access_token
+                }
+            });
+            axios({
+                method: 'put',
+                url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
+                headers: {
+                    Authorization: access_token
+                },
+                data: {
+                    "dto": { id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true }
+                }
+            });
+            const userResponse = await axios({
+                method: 'get',
+                url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
+                headers: {
+                    Authorization: access_token
+                }
+            });
+            axios({
+                method: 'put',
+                url: `http://localhost:8080/scooter-sharing/api/user/update`,
+                headers: {
+                    Authorization: access_token
+                },
+                data: {
+                    "dto": { "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data] }
+                }
+            });
             setItems(items.filter(item => item.id !== id));
         } catch (error) {
             alert('Data sending error!');

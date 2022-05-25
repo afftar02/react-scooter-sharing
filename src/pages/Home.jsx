@@ -2,15 +2,24 @@ import axios from 'axios';
 import React from 'react';
 import Card from "../components/Card/Card";
 import DetailedCard from "../components/DetailedCard/DetailedCard";
+import { AppContext } from "../App";
 
 function Home() {
     const [itemChosen, setItemChosen] = React.useState();
     const [items, setItems] = React.useState();
 
+    const { access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
+
     async function getItemsFromServer() {
         try {
-            const { data } = await axios.get('http://localhost:8080/scooter-sharing/api/scooters');
-            setItems(data);
+            const scootersResponse = await axios({
+                method: 'get',
+                url: `http://localhost:8080/scooter-sharing/api/scooters`,
+                headers: {
+                    Authorization: access_token
+                }
+            });
+            setItems(scootersResponse.data);
         } catch (error) {
             alert('Data loading error!');
         }

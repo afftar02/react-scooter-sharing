@@ -8,26 +8,50 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
   const [height, setHeight] = React.useState();
   const [stopButtonTranslateY, setStopButtonTranslateY] = React.useState();
-  const [warningMessage,setWarningMessage] = React.useState();
-  const [locationName,setLocationName] = React.useState();
-  const [locationDescription,setLocationDescription] = React.useState();
+  const [warningMessage, setWarningMessage] = React.useState();
+  const [locationName, setLocationName] = React.useState();
+  const [locationDescription, setLocationDescription] = React.useState();
 
-  const { userId } = React.useContext(AppContext);
+  const { userId, access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
 
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
       if (locationName && locationDescription) {
         try {
-          axios.put('http://localhost:8080/scooter-sharing/api/scooters/update', { id, "location": {"name": locationName, "description": locationDescription} , "booked": false });
-          const userResponse = await axios.get(`http://localhost:8080/scooter-sharing/api/user/${userId}`);
+          axios({
+            method: 'put',
+            url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
+            headers: {
+              Authorization: access_token
+            },
+            data: {
+              "dto": { id, "location": { "name": locationName, "description": locationDescription }, "booked": false }
+            }
+          });
+          const userResponse = await axios({
+            method: 'get',
+            url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
+            headers: {
+              Authorization: access_token
+            }
+          });
           const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
-          axios.put('http://localhost:8080/scooter-sharing/api/user/update', { "id": userId, "scooters": updatedUserScooters });
+          axios({
+            method: 'put',
+            url: `http://localhost:8080/scooter-sharing/api/user/update`,
+            headers: {
+              Authorization: access_token
+            },
+            data: {
+              "dto": { "id": userId, "scooters": updatedUserScooters }
+            }
+          });
           setUserItems(updatedUserScooters);
         } catch (error) {
           alert('Error when deleting scooter!');
         }
       }
-      else{
+      else {
         setWarningMessage('Please, enter new location for scooter!');
       }
     }
