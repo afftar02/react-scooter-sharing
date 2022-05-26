@@ -3,12 +3,15 @@ import React from 'react';
 import Card from "../components/Card/Card";
 import DetailedCard from "../components/DetailedCard/DetailedCard";
 import { AppContext } from "../App";
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
     const [itemChosen, setItemChosen] = React.useState();
     const [items, setItems] = React.useState();
 
-    const { access_token, refreshTokens } = React.useContext(AppContext);
+    const { userId, access_token, refreshTokens } = React.useContext(AppContext);
+
+    const navigate = useNavigate();
 
     async function getItemsFromServer() {
         try {
@@ -31,7 +34,13 @@ function Home() {
     }
 
     React.useEffect(() => {
-        getItemsFromServer();
+        if(userId){
+            getItemsFromServer();
+        }
+        else{
+            navigate('/');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
