@@ -8,7 +8,7 @@ function Home() {
     const [itemChosen, setItemChosen] = React.useState();
     const [items, setItems] = React.useState();
 
-    const { access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
+    const { access_token, refreshTokens } = React.useContext(AppContext);
 
     async function getItemsFromServer() {
         try {
@@ -21,7 +21,12 @@ function Home() {
             });
             setItems(scootersResponse.data);
         } catch (error) {
-            alert('Data loading error!');
+            if(error.response.status === 403){
+                refreshTokens();
+            }
+            else{
+                alert('Data loading error!');
+            }
         }
     }
 

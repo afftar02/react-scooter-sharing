@@ -8,7 +8,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
     const [rentalTime, setRentalTime] = React.useState(0);
     const [isMinTimeUnit, setIsMinTimeUnit] = React.useState(true);
 
-    const { userId, access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
+    const { userId, access_token, refreshTokens } = React.useContext(AppContext);
 
     const onStartClick = async () => {
         try {
@@ -48,7 +48,12 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
             });
             setItems(items.filter(item => item.id !== id));
         } catch (error) {
-            alert('Data sending error!');
+            if(error.response.status === 403){
+                refreshTokens();
+            }
+            else{
+                alert('Data sending error!');
+            }
         }
     }
 

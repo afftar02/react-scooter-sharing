@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import { Route, Routes } from 'react-router-dom';
@@ -10,12 +11,28 @@ export const AppContext = React.createContext({});
 
 function App() {
 
-  const [ userId, setUserId ] = React.useState();  
-  const [ access_token, setAccess_token ] = React.useState();
-  const [ refresh_token, setRefresh_token ] = React.useState();
+  const [userId, setUserId] = React.useState();
+  const [access_token, setAccess_token] = React.useState();
+  const [refresh_token, setRefresh_token] = React.useState();
+
+  async function refreshTokens() {
+    try {
+      const { data } = await axios({
+        method: 'get',
+        url: `http://localhost:8080/scooter-sharing/api/token/refresh`,
+        headers: {
+          Authorization: refresh_token
+        }
+      });
+      setAccess_token(data.access_token);
+      setRefresh_token(data.refresh_token);
+    } catch (error) {
+      alert('Token refreshing error!');
+    }
+  }
 
   return (
-    <AppContext.Provider value={{ userId, setUserId, access_token, setAccess_token, refresh_token, setRefresh_token }}>
+    <AppContext.Provider value={{ userId, setUserId, access_token, setAccess_token, refresh_token, setRefresh_token, refreshTokens }}>
       <div className="wrapper">
         <Header />
         <Routes>

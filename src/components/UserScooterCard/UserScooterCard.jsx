@@ -12,7 +12,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
   const [locationName, setLocationName] = React.useState();
   const [locationDescription, setLocationDescription] = React.useState();
 
-  const { userId, access_token, refresh_token, setAccess_token, setRefresh_token } = React.useContext(AppContext);
+  const { userId, access_token, refreshTokens } = React.useContext(AppContext);
 
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
@@ -48,7 +48,12 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
           });
           setUserItems(updatedUserScooters);
         } catch (error) {
-          alert('Error when deleting scooter!');
+          if (error.response.status === 403) {
+            refreshTokens();
+          }
+          else {
+            alert('Error when deleting scooter!');
+          }
         }
       }
       else {
