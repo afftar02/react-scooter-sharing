@@ -49,7 +49,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
             setItems(items.filter(item => item.id !== id));
         } catch (error) {
             if(error.response.status === 403){
-                refreshTokens();
+                await refreshTokens();
             }
             else{
                 alert('Data sending error!');

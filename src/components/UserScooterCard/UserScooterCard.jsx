@@ -49,7 +49,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
           setUserItems(updatedUserScooters);
         } catch (error) {
           if (error.response.status === 403) {
-            refreshTokens();
+            await refreshTokens();
           }
           else {
             alert('Error when deleting scooter!');

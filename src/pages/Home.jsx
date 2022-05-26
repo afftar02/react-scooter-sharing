@@ -21,10 +21,10 @@ function Home() {
             });
             setItems(scootersResponse.data);
         } catch (error) {
-            if(error.response.status === 403){
-                refreshTokens();
+            if (error.response.status === 403) {
+                await refreshTokens();
             }
-            else{
+            else {
                 alert('Data loading error!');
             }
         }

@@ -24,15 +24,15 @@ function App() {
           Authorization: refresh_token
         }
       });
-      setAccess_token(data.access_token);
-      setRefresh_token(data.refresh_token);
+      setAccess_token("Bearer " + data.access_token);
+      setRefresh_token("Bearer " + data.refresh_token);
     } catch (error) {
       alert('Token refreshing error!');
     }
   }
 
   return (
-    <AppContext.Provider value={{ userId, setUserId, access_token, setAccess_token, refresh_token, setRefresh_token, refreshTokens }}>
+    <AppContext.Provider value={{ userId, setUserId, access_token, setAccess_token, setRefresh_token, refreshTokens }}>
       <div className="wrapper">
         <Header />
         <Routes>

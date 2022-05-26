@@ -11,7 +11,7 @@ export const User = () => {
   const [userName, setUserName] = React.useState();
   const [userEmail, setUserEmail] = React.useState();
 
-  const { userId, setUserId , access_token, setAccess_token, setRefresh_token, refreshTokens } = React.useContext(AppContext);
+  const { userId, setUserId, access_token, setAccess_token, setRefresh_token, refreshTokens } = React.useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ export const User = () => {
       }
     } catch (error) {
       if (error.response.status === 403) {
-        refreshTokens();
+        await refreshTokens();
       }
       else {
         alert('Data loading error!');
