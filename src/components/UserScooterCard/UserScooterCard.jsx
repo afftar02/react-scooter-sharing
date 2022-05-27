@@ -2,6 +2,7 @@ import React from 'react';
 import styles from "./UserScooterCard.module.scss";
 import { AppContext } from "../../App";
 import axios from 'axios';
+import { CountDown } from '../CountDown/CountDown';
 
 export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems }) => {
 
@@ -79,7 +80,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
             <img height={25} src="img/half-green-battery.png" alt="battery" />
             <span>{battery}%</span>
           </div>
-          <span>20:45</span>
+          <CountDown minutes={1} />
           <button className={styles.stopButton} onClick={onStopClick} style={{ transform: `translateY(${stopButtonTranslateY})` }}>Stop</button>
         </div>
       </div>
