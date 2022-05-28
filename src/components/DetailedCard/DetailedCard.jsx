@@ -2,13 +2,16 @@ import React from "react";
 import styles from "./DetailedCard.module.scss";
 import axios from "axios";
 import { AppContext } from "../../App";
+import { TimeSelect } from "../TimeSelect/TimeSelect";
 
 function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, items, setItems }) {
 
     const [rentalTime, setRentalTime] = React.useState(0);
-    const [isMinTimeUnit, setIsMinTimeUnit] = React.useState(true);
+    const [selectedTimeUnit, setSelectedTimeUnit] = React.useState(0);
 
     const { userId, access_token, refreshTokens } = React.useContext(AppContext);
+
+    const timeUnitList = ["min","h"];
 
     const onStartClick = async () => {
         try {
@@ -77,14 +80,10 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                     <div className={styles.inputBlock}>
                         <div className={styles.input}>
                             <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" />
-                            <span>min</span>
-                            <div className={styles.select}>
-                                <label className={styles.switch}>
-                                    <input type="checkbox" onChange={() => setIsMinTimeUnit(!isMinTimeUnit)} />
-                                    <span className={styles.slider} />
-                                </label>
-                            </div>
-                            <span>h</span>
+                            <TimeSelect
+                                selectedTimeUnit={selectedTimeUnit}
+                                setSelectedTimeUnit={setSelectedTimeUnit}
+                                timeUnitList={timeUnitList} />
                         </div>
                         <div className={styles.buttonStartContainer}>
                             <button onClick={onStartClick}>Start<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
