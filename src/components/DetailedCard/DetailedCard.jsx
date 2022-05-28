@@ -8,53 +8,60 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
 
     const [rentalTime, setRentalTime] = React.useState(0);
     const [selectedTimeUnit, setSelectedTimeUnit] = React.useState(0);
+    const [warningMessage, setWarningMessage] = React.useState();
 
     const { userId, access_token, refreshTokens } = React.useContext(AppContext);
 
-    const timeUnitList = ["min","h"];
+    const timeUnitList = ["min", "h"];
 
     const onStartClick = async () => {
         try {
-            const scooterResponse = await axios({
-                method: 'get',
-                url: `http://localhost:8080/scooter-sharing/api/scooters/${id}`,
-                headers: {
-                    Authorization: access_token
-                }
-            });
-            axios({
-                method: 'put',
-                url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
-                headers: {
-                    Authorization: access_token
-                },
-                data: {
-                    id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true
-                }
-            });
-            const userResponse = await axios({
-                method: 'get',
-                url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
-                headers: {
-                    Authorization: access_token
-                }
-            });
-            axios({
-                method: 'put',
-                url: `http://localhost:8080/scooter-sharing/api/user/update`,
-                headers: {
-                    Authorization: access_token
-                },
-                data: {
-                    "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data]
-                }
-            });
-            setItems(items.filter(item => item.id !== id));
+            if (rentalTime) {
+                const scooterResponse = await axios({
+                    method: 'get',
+                    url: `http://localhost:8080/scooter-sharing/api/scooters/${id}`,
+                    headers: {
+                        Authorization: access_token
+                    }
+                });
+                let countedRentalTime = timeUnitList[selectedTimeUnit] === "min" ? rentalTime : (rentalTime * 60);//time in min
+                axios({
+                    method: 'put',
+                    url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
+                    headers: {
+                        Authorization: access_token
+                    },
+                    data: {
+                        id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true, "timeLeft": countedRentalTime
+                    }
+                });
+                const userResponse = await axios({
+                    method: 'get',
+                    url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
+                    headers: {
+                        Authorization: access_token
+                    }
+                });
+                axios({
+                    method: 'put',
+                    url: `http://localhost:8080/scooter-sharing/api/user/update`,
+                    headers: {
+                        Authorization: access_token
+                    },
+                    data: {
+                        "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data]
+                    }
+                });
+                setItems(items.filter(item => item.id !== id));
+            }
+            else {
+                setWarningMessage("Please,enter time!");
+            }
         } catch (error) {
-            if(error.response.status === 403){
+            if (error.response.status === 403) {
                 await refreshTokens();
             }
-            else{
+            else {
                 alert('Data sending error!');
             }
         }
@@ -79,7 +86,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                     </div>
                     <div className={styles.inputBlock}>
                         <div className={styles.input}>
-                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" />
+                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder={warningMessage ? warningMessage : "Enter rental time"} />
                             <TimeSelect
                                 selectedTimeUnit={selectedTimeUnit}
                                 setSelectedTimeUnit={setSelectedTimeUnit}

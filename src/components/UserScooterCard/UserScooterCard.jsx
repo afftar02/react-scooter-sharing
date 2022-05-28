@@ -4,7 +4,7 @@ import { AppContext } from "../../App";
 import axios from 'axios';
 import { CountDown } from '../CountDown/CountDown';
 
-export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems }) => {
+export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems, timeLeft }) => {
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
   const [height, setHeight] = React.useState();
@@ -26,7 +26,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
               Authorization: access_token
             },
             data: {
-              id, "location": { "name": locationName, "description": locationDescription }, "booked": false
+              id, "location": { "name": locationName, "description": locationDescription }, "booked": false, "timeLeft": 0
             }
           });
           const userResponse = await axios({
@@ -80,7 +80,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
             <img height={25} src="img/half-green-battery.png" alt="battery" />
             <span>{battery}%</span>
           </div>
-          <CountDown minutes={1} />
+          <CountDown hours={timeLeft / 60 >= 1 ? timeLeft/60 : 0 } minutes={timeLeft / 60 < 1 ? timeLeft : 0} />
           <button className={styles.stopButton} onClick={onStopClick} style={{ transform: `translateY(${stopButtonTranslateY})` }}>Stop</button>
         </div>
       </div>
