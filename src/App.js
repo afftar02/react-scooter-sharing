@@ -1,11 +1,12 @@
 import React from "react";
 import axios from 'axios';
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Header from "./components/Header";
 import { Route, Routes } from 'react-router-dom';
 import { Authorization } from "./pages/Authorization/Authorization";
 import { Registration } from "./pages/Registration/Registration";
 import { User } from "./pages/User/User";
+import { NotFound } from "./pages/NotFound/NotFound";
 
 export const AppContext = React.createContext({});
 
@@ -51,6 +52,10 @@ function App() {
           <Route
             exact path="/user"
             element={<User />}
+          />
+          <Route
+            path="*"
+            element={<NotFound />}
           />
         </Routes>
       </div>

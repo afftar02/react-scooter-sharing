@@ -38,20 +38,3 @@ header{
   height: 50px;
   list-style-type: none;
 }
-.content{
-  padding: 40px;
-  .content-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    h1{
-      padding: 0;
-    }
-  }
-}
-.items-block{
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}

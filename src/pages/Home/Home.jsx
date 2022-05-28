@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React from 'react';
-import Card from "../components/Card/Card";
-import DetailedCard from "../components/DetailedCard/DetailedCard";
-import { AppContext } from "../App";
+import styles from "./Home.module.scss";
+import Card from "../../components/Card/Card";
+import DetailedCard from "../../components/DetailedCard/DetailedCard";
+import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
-import { Sort } from '../components/Sort/Sort';
+import { Sort } from '../../components/Sort/Sort';
 
 function Home() {
     const [itemChosen, setItemChosen] = React.useState();
@@ -45,12 +46,12 @@ function Home() {
     }, []);
 
     return (
-        <div className="content">
-            <div className="content-header">
+        <div className={styles.content}>
+            <div className={styles.content__header}>
                 <h1>Available scooters:</h1>
                 <Sort/>
             </div>
-            <div className="items-block">
+            <div className={styles.items__block}>
                 {items && items.map((item) => (
                     !item.booked &&
                     <div key={item.id}>
