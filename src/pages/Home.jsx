@@ -4,6 +4,7 @@ import Card from "../components/Card/Card";
 import DetailedCard from "../components/DetailedCard/DetailedCard";
 import { AppContext } from "../App";
 import { useNavigate } from 'react-router-dom';
+import { Sort } from '../components/Sort/Sort';
 
 function Home() {
     const [itemChosen, setItemChosen] = React.useState();
@@ -34,10 +35,10 @@ function Home() {
     }
 
     React.useEffect(() => {
-        if(userId){
+        if (userId) {
             getItemsFromServer();
         }
-        else{
+        else {
             navigate('/');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +46,10 @@ function Home() {
 
     return (
         <div className="content">
-            <h1>Available scooters:</h1>
+            <div className="content-header">
+                <h1>Available scooters:</h1>
+                <Sort/>
+            </div>
             <div className="items-block">
                 {items && items.map((item) => (
                     !item.booked &&

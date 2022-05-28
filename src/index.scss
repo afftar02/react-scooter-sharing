@@ -40,8 +40,14 @@ header{
 }
 .content{
   padding: 40px;
-  h1{
-    padding: 0;
+  .content-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1{
+      padding: 0;
+    }
   }
 }
 .items-block{
