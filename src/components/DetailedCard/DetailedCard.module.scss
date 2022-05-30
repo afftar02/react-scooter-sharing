@@ -50,6 +50,14 @@
         }
 
         .inputBlock {
+            position: relative;
+            .warningMessage {
+                color: red;
+                position: absolute;
+                top: 30px;
+                left: 40px;
+            }
+
             .input {
                 margin: 5% 5%;
                 display: flex;

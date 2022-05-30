@@ -16,7 +16,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
 
     const onStartClick = async () => {
         try {
-            if (rentalTime) {
+            if (rentalTime && Number.isInteger(parseInt(rentalTime))) {
                 const scooterResponse = await axios({
                     method: 'get',
                     url: `http://localhost:8080/scooter-sharing/api/scooters/${id}`,
@@ -55,7 +55,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                 setItems(items.filter(item => item.id !== id));
             }
             else {
-                setWarningMessage("Please,enter time!");
+                setWarningMessage("Please,enter correct time!");
             }
         } catch (error) {
             if (error.response.status === 403) {
@@ -85,8 +85,9 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                         <p>{battery}%</p>
                     </div>
                     <div className={styles.inputBlock}>
+                        <p className={styles.warningMessage}>{warningMessage}</p>
                         <div className={styles.input}>
-                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder={warningMessage ? warningMessage : "Enter rental time"} />
+                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" />
                             <TimeSelect
                                 selectedTimeUnit={selectedTimeUnit}
                                 setSelectedTimeUnit={setSelectedTimeUnit}
