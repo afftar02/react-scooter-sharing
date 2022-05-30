@@ -80,7 +80,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
             <img height={25} src="img/half-green-battery.png" alt="battery" />
             <span>{battery}%</span>
           </div>
-          <CountDown hours={timeLeft / 60 >= 1 ? Math.trunc(timeLeft/60) : 0 } minutes={timeLeft / 60 < 1 ? timeLeft : ((timeLeft/60 - Math.trunc(timeLeft/60))*60)} />
+          <CountDown hours={timeLeft / 60 >= 1 ? Math.trunc(timeLeft/60) : 0 } minutes={timeLeft / 60 < 1 ? timeLeft : Math.round(((timeLeft/60 - Math.trunc(timeLeft/60))*60))} />
           <button className={styles.stopButton} onClick={onStopClick} style={{ transform: `translateY(${stopButtonTranslateY})` }}>Stop</button>
         </div>
       </div>
