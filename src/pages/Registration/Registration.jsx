@@ -19,7 +19,7 @@ export const Registration = () => {
 
     async function Register() {
         try {
-            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user/create", { firstName, secondName, username, password, "roles": [{ "name": "User" }] });
+            const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, username, password, "roles": [{ "name": "User" }] });
             setUserId(response.data.id);
             const loginResponse = await axios({
                 method: 'post',

@@ -21,7 +21,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
         try {
           await axios({
             method: 'put',
-            url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
+            url: `http://localhost:8080/scooter-sharing/api/scooters`,
             headers: {
               Authorization: access_token
             },
@@ -39,7 +39,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
           const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
           await axios({
             method: 'put',
-            url: `http://localhost:8080/scooter-sharing/api/user/update`,
+            url: `http://localhost:8080/scooter-sharing/api/user`,
             headers: {
               Authorization: access_token
             },
