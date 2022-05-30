@@ -19,7 +19,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
     if (isHiddenInputOpened) {
       if (locationName && locationDescription) {
         try {
-          axios({
+          await axios({
             method: 'put',
             url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
             headers: {
@@ -37,7 +37,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
             }
           });
           const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
-          axios({
+          await axios({
             method: 'put',
             url: `http://localhost:8080/scooter-sharing/api/user/update`,
             headers: {

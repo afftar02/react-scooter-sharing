@@ -25,7 +25,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                     }
                 });
                 let countedRentalTime = timeUnitList[selectedTimeUnit] === "min" ? rentalTime : (rentalTime * 60);//time in min
-                axios({
+                await axios({
                     method: 'put',
                     url: `http://localhost:8080/scooter-sharing/api/scooters/update`,
                     headers: {
