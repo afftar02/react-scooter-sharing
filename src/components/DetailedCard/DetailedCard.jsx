@@ -16,7 +16,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
 
     const onStartClick = async () => {
         try {
-            if (rentalTime && Number.isInteger(parseInt(rentalTime))) {
+            if (rentalTime && Number.isInteger(parseInt(rentalTime)) && rentalTime >= 1) {
                 const scooterResponse = await axios({
                     method: 'get',
                     url: `http://localhost:8080/scooter-sharing/api/scooters/${id}`,
