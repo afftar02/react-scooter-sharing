@@ -58,7 +58,7 @@ function Home() {
                 {isLoading ? [...new Array(5)].map(() => <CardSkeleton />)
                     : items.map((item) => (
                         !item.booked &&
-                        <div key={item.id}>
+                        <div key={item.id} className={styles.cardContainer}>
                             <Card
                                 imageUrl={item.imageUrl}
                                 locationName={item.location.name}
