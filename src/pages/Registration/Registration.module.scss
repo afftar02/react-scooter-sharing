@@ -15,6 +15,11 @@
     background-color: white;
     border-radius: 30px;
     box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 500px) {
+        width: 100%;
+    }
+
     h2 {
         text-align: center;
         padding-top: 50px;
@@ -26,7 +31,8 @@
         padding: 30px;
         input {
             margin-bottom: 15px;
-            width: 440px;
+            // width: 440px;
+            width: 96%;
             height: 35px;
             border-radius: 5px;
             border: 1px solid #eaeaea;
@@ -39,7 +45,8 @@
         button{
             margin-top: 15px;
             height: 35px;
-            width: 300px;
+            // width: 300px;
+            width:70%;
             border: none;
             background-color: darkgreen;
             color: white;

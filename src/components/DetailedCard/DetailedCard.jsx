@@ -8,7 +8,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
 
     const [rentalTime, setRentalTime] = React.useState(0);
     const [selectedTimeUnit, setSelectedTimeUnit] = React.useState(0);
-    const [warningMessage, setWarningMessage] = React.useState();
+    const [isWarning, setIsWarning] = React.useState(false);
 
     const { userId, access_token, refreshTokens } = React.useContext(AppContext);
 
@@ -55,7 +55,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                 setItems(items.filter(item => item.id !== id));
             }
             else {
-                setWarningMessage("Please,enter correct time!");
+                setIsWarning(true);
             }
         } catch (error) {
             if (error.response.status === 403) {
@@ -85,9 +85,8 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                         <p>{battery}%</p>
                     </div>
                     <div className={styles.inputBlock}>
-                        <p className={styles.warningMessage}>{warningMessage}</p>
                         <div className={styles.input}>
-                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" />
+                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" className={isWarning ? styles.warning : ' '}/>
                             <TimeSelect
                                 selectedTimeUnit={selectedTimeUnit}
                                 setSelectedTimeUnit={setSelectedTimeUnit}

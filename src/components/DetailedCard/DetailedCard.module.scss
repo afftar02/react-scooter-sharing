@@ -11,10 +11,32 @@
 .detailedCard {
     width: 550px;
     height: 300px;
-    margin: 15% auto;
+    margin: 200px auto;
     background-color: #f3f3f3;
     border-radius: 25px;
     display: flex;
+
+    @media (max-width:550px){
+        width: 250px;
+        height: 295px;
+        img{
+            display: none;
+        }
+        .container{
+            flex-grow: 0;
+        }
+        .input{
+            flex-direction: column;
+            input{
+                margin-right: 0 !important;
+                margin-bottom: 15px;
+            }
+        }
+        .buttonStartContainer {
+            padding-right: 0 !important;
+            justify-content: center !important; 
+        }
+    }
 
     img {
         margin: 5%;
@@ -51,11 +73,11 @@
 
         .inputBlock {
             position: relative;
-            .warningMessage {
-                color: red;
-                position: absolute;
-                top: 30px;
-                left: 40px;
+            .warning {
+                &::placeholder{
+                    color: red;
+                }
+                border: 1px solid red !important;
             }
 
             .input {

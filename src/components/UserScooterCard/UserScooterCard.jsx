@@ -7,9 +7,8 @@ import { CountDown } from '../CountDown/CountDown';
 export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems, timeLeft }) => {
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
-  const [height, setHeight] = React.useState();
   const [stopButtonTranslateY, setStopButtonTranslateY] = React.useState();
-  const [warningMessage, setWarningMessage] = React.useState();
+  const [isWarning, setIsWarning] = React.useState(false);
   const [locationName, setLocationName] = React.useState();
   const [locationDescription, setLocationDescription] = React.useState();
 
@@ -58,18 +57,17 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
         }
       }
       else {
-        setWarningMessage('Please, enter new location for scooter!');
+        setIsWarning(true);
       }
     }
     else {
       setIsHiddenInputOpened(true);
-      setHeight('210px');
       setStopButtonTranslateY('140px');
     }
   }
 
   return (
-    <div className={styles.cardContainer} style={{ height: height }}>
+    <div className={isHiddenInputOpened ? `${styles.cardContainer__opened} ${styles.cardContainer}` : styles.cardContainer}>
       <div className={styles.shortCardContainer}>
         <div className={styles.leftPartContainer}>
           <img className={styles.scooterImage} src={imageUrl} alt="scooter" />
@@ -86,10 +84,9 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
       </div>
       <div className={styles.locationHiddenContainer}>
         <h4>Enter new location for scooter:</h4>
-        <p>{warningMessage}</p>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="Location name" onChange={(event) => setLocationName(event.target.value)} />
-          <textarea placeholder="Location description" onChange={(event) => setLocationDescription(event.target.value)} />
+          <input type="text" placeholder="Location name" onChange={(event) => setLocationName(event.target.value)} className={isWarning ? styles.warning : ' '}/>
+          <textarea placeholder="Location description" onChange={(event) => setLocationDescription(event.target.value)} className={isWarning ? styles.warning : ' '}/>
         </div>
       </div>
     </div>
