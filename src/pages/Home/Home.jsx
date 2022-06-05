@@ -5,7 +5,6 @@ import Card from "../../components/Card/Card";
 import DetailedCard from "../../components/DetailedCard/DetailedCard";
 import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
-import { Sort } from '../../components/Sort/Sort';
 import CardSkeleton from '../../components/Card/CardSkeleton';
 
 function Home() {
@@ -52,7 +51,7 @@ function Home() {
         <div className={styles.content}>
             <div className={styles.content__header}>
                 <h1>Available scooters:</h1>
-                <Sort />
+                {/* <Sort /> */}
             </div>
             <div className={styles.items__block}>
                 {isLoading ? [...new Array(5)].map(() => <CardSkeleton />)

@@ -5,7 +5,7 @@ export const Sort = () => {
     const [open, setOpen] = React.useState(false);
     const [selected, setSelected] = React.useState(0);
 
-    const list = ["Alphabet", "Charge", "Location"];
+    const list = ["Charge", "Location"];
 
     const selectListItem = (index) => {
         setSelected(index);
