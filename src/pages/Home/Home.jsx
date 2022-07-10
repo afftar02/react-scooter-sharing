@@ -6,13 +6,16 @@ import DetailedCard from "../../components/DetailedCard/DetailedCard";
 import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
 import CardSkeleton from '../../components/Card/CardSkeleton';
+import { useSelector } from 'react-redux';
 
 function Home() {
+    const { userId, access_token } = useSelector((state) => state.token);
+
     const [itemChosen, setItemChosen] = React.useState();
     const [items, setItems] = React.useState();
     const [isLoading, setIsLoading] = React.useState(true);
 
-    const { userId, access_token, refreshTokens } = React.useContext(AppContext);
+    const { refreshTokens } = React.useContext(AppContext);
 
     const navigate = useNavigate();
 

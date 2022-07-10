@@ -7,14 +7,14 @@ import { Authorization } from "./pages/Authorization/Authorization";
 import { Registration } from "./pages/Registration/Registration";
 import { User } from "./pages/User/User";
 import { NotFound } from "./pages/NotFound/NotFound";
+import { useDispatch, useSelector } from "react-redux";
+import { setAccess_token, setRefresh_token } from './redux/slices/tokenSlice';
 
 export const AppContext = React.createContext({});
 
 function App() {
-
-  const [userId, setUserId] = React.useState();
-  const [access_token, setAccess_token] = React.useState();
-  const [refresh_token, setRefresh_token] = React.useState();
+  const dispatch = useDispatch();
+  const refresh_token = useSelector((state) => state.token.refresh_token);
 
   async function refreshTokens() {
     try {
@@ -25,15 +25,15 @@ function App() {
           Authorization: refresh_token
         }
       });
-      setAccess_token("Bearer " + data.access_token);
-      setRefresh_token("Bearer " + data.refresh_token);
+      dispatch(setAccess_token("Bearer " + data.access_token));
+      dispatch(setRefresh_token("Bearer " + data.refresh_token));
     } catch (error) {
       alert('Token refreshing error!');
     }
   }
 
   return (
-    <AppContext.Provider value={{ userId, setUserId, access_token, setAccess_token, setRefresh_token, refreshTokens }}>
+    <AppContext.Provider value={{ refreshTokens }}>
       <div className="wrapper">
         <Header />
         <Routes>

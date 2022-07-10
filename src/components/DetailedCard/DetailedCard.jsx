@@ -3,14 +3,16 @@ import styles from "./DetailedCard.module.scss";
 import axios from "axios";
 import { AppContext } from "../../App";
 import { TimeSelect } from "../TimeSelect/TimeSelect";
+import { useSelector } from 'react-redux';
 
 function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, items, setItems }) {
+    const { userId, access_token } = useSelector((state) => state.token);
 
     const [rentalTime, setRentalTime] = React.useState(0);
     const [selectedTimeUnit, setSelectedTimeUnit] = React.useState(0);
     const [isWarning, setIsWarning] = React.useState(false);
 
-    const { userId, access_token, refreshTokens } = React.useContext(AppContext);
+    const { refreshTokens } = React.useContext(AppContext);
 
     const timeUnitList = ["min", "h"];
 

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from "./Registration.module.scss";
-import { AppContext } from "../../App";
+import { useDispatch } from 'react-redux';
+import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
 import axios from 'axios';
 import qs from 'qs';
 
 export const Registration = () => {
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -15,12 +17,10 @@ export const Registration = () => {
     const [password, setPassword] = React.useState();
     const [errorMessage, setErrorMessage] = React.useState();
 
-    const { setUserId, setAccess_token, setRefresh_token } = React.useContext(AppContext);
-
     async function Register() {
         try {
             const response = await axios.post("http://localhost:8080/scooter-sharing/api/user", { firstName, secondName, username, password, "roles": [{ "name": "User" }] });
-            setUserId(response.data.id);
+            dispatch(setUserId(response.data.id));
             const loginResponse = await axios({
                 method: 'post',
                 url: 'http://localhost:8080/scooter-sharing/api/login',
@@ -32,8 +32,8 @@ export const Registration = () => {
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
                 }
             });
-            setAccess_token("Bearer " + loginResponse.data.access_token);
-            setRefresh_token("Bearer " + loginResponse.data.refresh_token);
+            dispatch(setAccess_token("Bearer " + loginResponse.data.access_token));
+            dispatch(setRefresh_token("Bearer " + loginResponse.data.refresh_token));
             navigate('/home');
         } catch (error) {
             setErrorMessage("Registration error!");

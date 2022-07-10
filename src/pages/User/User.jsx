@@ -4,14 +4,18 @@ import styles from "./User.module.scss";
 import axios from 'axios';
 import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
 
 export const User = () => {
+  const dispatch = useDispatch();
+  const { userId, access_token } = useSelector((state) => state.token);
 
   const [userItems, setUserItems] = React.useState();
   const [userName, setUserName] = React.useState();
   const [userEmail, setUserEmail] = React.useState();
 
-  const { userId, setUserId, access_token, setAccess_token, setRefresh_token, refreshTokens } = React.useContext(AppContext);
+  const { refreshTokens } = React.useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -50,9 +54,9 @@ export const User = () => {
   }, []);
 
   const onLogOffClick = () => {
-    setUserId();
-    setAccess_token();
-    setRefresh_token();
+    dispatch(setUserId());
+    dispatch(setAccess_token());
+    dispatch(setRefresh_token());
     navigate('/');
   }
 

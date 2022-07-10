@@ -3,8 +3,10 @@ import styles from "./UserScooterCard.module.scss";
 import { AppContext } from "../../App";
 import axios from 'axios';
 import { CountDown } from '../CountDown/CountDown';
+import { useSelector } from 'react-redux';
 
 export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems, timeLeft }) => {
+  const { userId, access_token } = useSelector((state) => state.token);
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
   const [stopButtonTranslateY, setStopButtonTranslateY] = React.useState();
@@ -12,7 +14,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
   const [locationName, setLocationName] = React.useState();
   const [locationDescription, setLocationDescription] = React.useState();
 
-  const { userId, access_token, refreshTokens } = React.useContext(AppContext);
+  const { refreshTokens } = React.useContext(AppContext);
 
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
@@ -78,15 +80,15 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
             <img height={25} src="img/half-green-battery.png" alt="battery" />
             <span>{battery}%</span>
           </div>
-          <CountDown hours={timeLeft / 60 >= 1 ? Math.trunc(timeLeft/60) : 0 } minutes={timeLeft / 60 < 1 ? timeLeft : Math.round(((timeLeft/60 - Math.trunc(timeLeft/60))*60))} />
+          <CountDown hours={timeLeft / 60 >= 1 ? Math.trunc(timeLeft / 60) : 0} minutes={timeLeft / 60 < 1 ? timeLeft : Math.round(((timeLeft / 60 - Math.trunc(timeLeft / 60)) * 60))} />
           <button className={styles.stopButton} onClick={onStopClick} style={{ transform: `translateY(${stopButtonTranslateY})` }}>Stop</button>
         </div>
       </div>
       <div className={styles.locationHiddenContainer}>
         <h4>Enter new location for scooter:</h4>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="Location name" onChange={(event) => setLocationName(event.target.value)} className={isWarning ? styles.warning : ' '}/>
-          <textarea placeholder="Location description" onChange={(event) => setLocationDescription(event.target.value)} className={isWarning ? styles.warning : ' '}/>
+          <input type="text" placeholder="Location name" onChange={(event) => setLocationName(event.target.value)} className={isWarning ? styles.warning : ' '} />
+          <textarea placeholder="Location description" onChange={(event) => setLocationDescription(event.target.value)} className={isWarning ? styles.warning : ' '} />
         </div>
       </div>
     </div>

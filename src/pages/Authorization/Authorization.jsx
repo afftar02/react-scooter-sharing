@@ -3,17 +3,17 @@ import axios from 'axios';
 import qs from 'qs';
 import styles from "./Authorization.module.scss";
 import { Link, useNavigate } from 'react-router-dom';
-import { AppContext } from "../../App";
+import { useDispatch } from 'react-redux';
+import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
 
 export const Authorization = () => {
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   const [username, setUsername] = React.useState();
   const [password, setPassword] = React.useState();
   const [errorMessage, setErrorMessage] = React.useState();
-
-  const { setUserId, setAccess_token, setRefresh_token } = React.useContext(AppContext);
 
   async function isRightAuthorization() {
     try {
@@ -35,9 +35,9 @@ export const Authorization = () => {
           Authorization: "Bearer " + loginResponse.data.access_token
         }
       });
-      setAccess_token("Bearer " + loginResponse.data.access_token);
-      setRefresh_token("Bearer " + loginResponse.data.refresh_token);
-      setUserId(userResponse.data.id);
+      dispatch(setAccess_token("Bearer " + loginResponse.data.access_token));
+      dispatch(setRefresh_token("Bearer " + loginResponse.data.refresh_token));
+      dispatch(setUserId(userResponse.data.id));
       navigate('/home');
     } catch (error) {
       setErrorMessage("Authorization Error!");
