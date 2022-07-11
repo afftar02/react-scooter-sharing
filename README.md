@@ -7,10 +7,11 @@ The application simulates the work of scooter-sharing service, where we can rent
 
 Technologies used in the project:
 
-* javascript
+* Javascript
 * React
 * React Router
 * Html
 * Css
 * Axios
 * JWT tokens
+* Redux
