@@ -6,14 +6,13 @@ import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
+import { setUserItems, setUserName, setUserEmail } from '../../redux/slices/userSlice';
 
 export const User = () => {
   const dispatch = useDispatch();
-  const { userId, access_token } = useSelector((state) => state.token);
 
-  const [userItems, setUserItems] = React.useState();
-  const [userName, setUserName] = React.useState();
-  const [userEmail, setUserEmail] = React.useState();
+  const { userId, access_token } = useSelector((state) => state.token);
+  const { userItems, userName, userEmail } = useSelector((state) => state.user);
 
   const { refreshTokens } = React.useContext(AppContext);
 
@@ -28,10 +27,10 @@ export const User = () => {
           Authorization: access_token
         }
       });
-      setUserName(userResponse.data.firstName + " " + userResponse.data.secondName);
-      setUserEmail(userResponse.data.username);
+      dispatch(setUserName(userResponse.data.firstName + " " + userResponse.data.secondName));
+      dispatch(setUserEmail(userResponse.data.username));
       if (userResponse.data.scooters.length > 0) {
-        setUserItems(userResponse.data.scooters);
+        dispatch(setUserItems(userResponse.data.scooters));
       }
     } catch (error) {
       if (error.response.status === 403) {
@@ -44,10 +43,10 @@ export const User = () => {
   }
 
   React.useEffect(() => {
-    if(userId){
+    if (userId) {
       getUserScooters();
     }
-    else{
+    else {
       navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,7 +74,7 @@ export const User = () => {
           <UserScooterCard
             key={item.id}
             {...item}
-            setUserItems={setUserItems} />
+            setUserItems={setUserItems} />//TODO: Remove
         ))}
       </div>
     </div>

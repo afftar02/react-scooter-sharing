@@ -6,13 +6,15 @@ import DetailedCard from "../../components/DetailedCard/DetailedCard";
 import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
 import CardSkeleton from '../../components/Card/CardSkeleton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setItemChosen, setItems } from '../../redux/slices/homeSlice';
 
 function Home() {
-    const { userId, access_token } = useSelector((state) => state.token);
+    const dispatch = useDispatch();
 
-    const [itemChosen, setItemChosen] = React.useState();
-    const [items, setItems] = React.useState();
+    const { userId, access_token } = useSelector((state) => state.token);
+    const { itemChosen, items } = useSelector((state) => state.home);
+
     const [isLoading, setIsLoading] = React.useState(true);
 
     const { refreshTokens } = React.useContext(AppContext);
@@ -29,7 +31,7 @@ function Home() {
                 }
             });
             setIsLoading(false);
-            setItems(scootersResponse.data);
+            dispatch(setItems(scootersResponse.data));
         } catch (error) {
             if (error.response.status === 403) {
                 await refreshTokens();
@@ -66,15 +68,15 @@ function Home() {
                                 locationName={item.location.name}
                                 battery={item.battery}
                                 model={item.modelName}
-                                onClick={() => setItemChosen(item.id)}
+                                onClick={() => dispatch(setItemChosen(item.id))}
                             />
                             {
                                 itemChosen === item.id &&
                                 <DetailedCard
                                     {...item}
-                                    onClose={() => setItemChosen()}
+                                    onClose={() => dispatch(setItemChosen())}
                                     items={items}
-                                    setItems={setItems}
+                                    setItems={setItems}//TODO: remove
                                 />
                             }
                         </div>

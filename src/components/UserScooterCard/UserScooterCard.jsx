@@ -3,9 +3,11 @@ import styles from "./UserScooterCard.module.scss";
 import { AppContext } from "../../App";
 import axios from 'axios';
 import { CountDown } from '../CountDown/CountDown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems, timeLeft }) => {
+  const dispatch = useDispatch();//TODO: remove
+
   const { userId, access_token } = useSelector((state) => state.token);
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
@@ -48,7 +50,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
               "id": userId, "scooters": updatedUserScooters
             }
           });
-          setUserItems(updatedUserScooters);
+          dispatch(setUserItems(updatedUserScooters));//TODO: remove
         } catch (error) {
           if (error.response.status === 403) {
             await refreshTokens();

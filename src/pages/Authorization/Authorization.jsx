@@ -3,16 +3,16 @@ import axios from 'axios';
 import qs from 'qs';
 import styles from "./Authorization.module.scss";
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
+import { setUsername, setPassword } from '../../redux/slices/authorizationSlice';
 
 export const Authorization = () => {
   const dispatch = useDispatch();
+  const { username, password } = useSelector((state) => state.authorization);
 
   const navigate = useNavigate();
-
-  const [username, setUsername] = React.useState();
-  const [password, setPassword] = React.useState();
+  
   const [errorMessage, setErrorMessage] = React.useState();
 
   async function isRightAuthorization() {
@@ -50,8 +50,8 @@ export const Authorization = () => {
         <h2>Log in to scooter-sharing</h2>
         <div className={styles.inputContainer}>
           <p className={styles.errorMessage}>{errorMessage}</p>
-          <input type="email" placeholder="Email address" onChange={(event) => setUsername(event.target.value)} />
-          <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+          <input type="email" placeholder="Email address" onChange={(event) => dispatch(setUsername(event.target.value))} />
+          <input type="password" placeholder="Password" onChange={(event) => dispatch(setPassword(event.target.value))} />
           <button className={styles.logInButton} onClick={isRightAuthorization}>Log In</button>
           <div className={styles.orBlock}>or</div>
           <Link to="/registration">
