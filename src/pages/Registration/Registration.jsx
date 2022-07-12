@@ -1,19 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from "./Registration.module.scss";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
-import { setUsername, setPassword, setFirstName, setSecondName } from '../../redux/slices/registrationSlice';
 import axios from 'axios';
 import qs from 'qs';
 
 export const Registration = () => {
     const dispatch = useDispatch();
 
-    const { username, password, firstName, secondName } = useSelector((state) => state.registration);
-
     const navigate = useNavigate();
 
+    const [username, setUsername] = React.useState();
+    const [password, setPassword] = React.useState();
+    const [firstName, setFirstName] = React.useState();
+    const [secondName, setSecondName] = React.useState();
     const [errorMessage, setErrorMessage] = React.useState();
 
     async function Register() {
@@ -45,10 +46,10 @@ export const Registration = () => {
                 <h2>Registration scooter-sharing</h2>
                 <div className={styles.inputContainer}>
                     <p className={styles.errorMessage}>{errorMessage}</p>
-                    <input type="text" placeholder="First name" onChange={(event) => dispatch(setFirstName(event.target.value))} />
-                    <input type="text" placeholder="Second name" onChange={(event) => dispatch(setSecondName(event.target.value))} />
-                    <input type="email" placeholder="Email address" onChange={(event) => dispatch(setUsername(event.target.value))} />
-                    <input type="password" placeholder="Password" onChange={(event) => dispatch(setPassword(event.target.value))} />
+                    <input type="text" placeholder="First name" onChange={(event) => setFirstName(event.target.value)} />
+                    <input type="text" placeholder="Second name" onChange={(event) => setSecondName(event.target.value)} />
+                    <input type="email" placeholder="Email address" onChange={(event) => setUsername(event.target.value)} />
+                    <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
                     <button onClick={Register}>Register</button>
                 </div>
             </div>

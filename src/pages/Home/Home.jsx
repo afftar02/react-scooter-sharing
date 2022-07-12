@@ -75,8 +75,6 @@ function Home() {
                                 <DetailedCard
                                     {...item}
                                     onClose={() => dispatch(setItemChosen())}
-                                    items={items}
-                                    setItems={setItems}//TODO: remove
                                 />
                             }
                         </div>

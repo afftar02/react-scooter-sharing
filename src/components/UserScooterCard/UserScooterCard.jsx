@@ -4,15 +4,16 @@ import { AppContext } from "../../App";
 import axios from 'axios';
 import { CountDown } from '../CountDown/CountDown';
 import { useDispatch, useSelector } from 'react-redux';
+import { setUserItems } from '../../redux/slices/userSlice';
 
-export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems, timeLeft }) => {
-  const dispatch = useDispatch();//TODO: remove
+export const UserScooterCard = ({ id, imageUrl, battery, modelName, timeLeft }) => {
+  const dispatch = useDispatch();
 
   const { userId, access_token } = useSelector((state) => state.token);
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
-  const [stopButtonTranslateY, setStopButtonTranslateY] = React.useState();
   const [isWarning, setIsWarning] = React.useState(false);
+  
   const [locationName, setLocationName] = React.useState();
   const [locationDescription, setLocationDescription] = React.useState();
 
@@ -50,7 +51,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
               "id": userId, "scooters": updatedUserScooters
             }
           });
-          dispatch(setUserItems(updatedUserScooters));//TODO: remove
+          dispatch(setUserItems(updatedUserScooters));
         } catch (error) {
           if (error.response.status === 403) {
             await refreshTokens();
@@ -66,7 +67,6 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
     }
     else {
       setIsHiddenInputOpened(true);
-      setStopButtonTranslateY('140px');
     }
   }
 
@@ -83,7 +83,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, setUserItems
             <span>{battery}%</span>
           </div>
           <CountDown hours={timeLeft / 60 >= 1 ? Math.trunc(timeLeft / 60) : 0} minutes={timeLeft / 60 < 1 ? timeLeft : Math.round(((timeLeft / 60 - Math.trunc(timeLeft / 60)) * 60))} />
-          <button className={styles.stopButton} onClick={onStopClick} style={{ transform: `translateY(${stopButtonTranslateY})` }}>Stop</button>
+          <button className={isHiddenInputOpened ? `${styles.stopButton} ${styles.moveButton}` : `${styles.stopButton}`} onClick={onStopClick}>Stop</button>
         </div>
       </div>
       <div className={styles.locationHiddenContainer}>

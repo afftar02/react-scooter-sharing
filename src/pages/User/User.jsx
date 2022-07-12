@@ -73,8 +73,7 @@ export const User = () => {
         {userItems && userItems.map((item) => (
           <UserScooterCard
             key={item.id}
-            {...item}
-            setUserItems={setUserItems} />//TODO: Remove
+            {...item} />
         ))}
       </div>
     </div>

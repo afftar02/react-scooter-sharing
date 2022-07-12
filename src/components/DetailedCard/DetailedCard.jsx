@@ -4,9 +4,13 @@ import axios from "axios";
 import { AppContext } from "../../App";
 import { TimeSelect } from "../TimeSelect/TimeSelect";
 import { useDispatch, useSelector } from 'react-redux';
+import { setItems } from '../../redux/slices/homeSlice';
 
-function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, items, setItems }) {
-    const dispatch = useDispatch();//TODO: remove
+
+function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
+    const dispatch = useDispatch();
+
+    const items = useSelector((state) => state.home);
 
     const { userId, access_token } = useSelector((state) => state.token);
 
@@ -56,7 +60,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose, ite
                         "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data]
                     }
                 });
-                dispatch(setItems(items.filter(item => item.id !== id)));//TODO: remove
+                dispatch(setItems(items.filter(item => item.id !== id)));
             }
             else {
                 setIsWarning(true);
