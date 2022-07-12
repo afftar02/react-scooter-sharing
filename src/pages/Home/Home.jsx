@@ -7,14 +7,15 @@ import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
 import CardSkeleton from '../../components/Card/CardSkeleton';
 import { useDispatch, useSelector } from 'react-redux';
-import { setItemChosen, setItems } from '../../redux/slices/homeSlice';
+import { setItems } from '../../redux/slices/homeSlice';
 
 function Home() {
     const dispatch = useDispatch();
 
     const { userId, access_token } = useSelector((state) => state.token);
-    const { itemChosen, items } = useSelector((state) => state.home);
+    const { items } = useSelector((state) => state.home);
 
+    const [itemChosen, setItemChosen] = React.useState();
     const [isLoading, setIsLoading] = React.useState(true);
 
     const { refreshTokens } = React.useContext(AppContext);
@@ -68,13 +69,13 @@ function Home() {
                                 locationName={item.location.name}
                                 battery={item.battery}
                                 model={item.modelName}
-                                onClick={() => dispatch(setItemChosen(item.id))}
+                                onClick={() => setItemChosen(item.id)}
                             />
                             {
                                 itemChosen === item.id &&
                                 <DetailedCard
                                     {...item}
-                                    onClose={() => dispatch(setItemChosen())}
+                                    onClose={() => setItemChosen()}
                                 />
                             }
                         </div>
