@@ -10,7 +10,7 @@ import { setItems } from '../../redux/slices/homeSlice';
 function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
     const dispatch = useDispatch();
 
-    const items = useSelector((state) => state.home);
+    const { items } = useSelector((state) => state.home);
 
     const { userId, access_token } = useSelector((state) => state.token);
 
