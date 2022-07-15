@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./DetailedCard.module.scss";
 import axios from "axios";
-import { AppContext } from "../../App";
 import { TimeSelect } from "../TimeSelect/TimeSelect";
 import { useDispatch, useSelector } from 'react-redux';
 import { setItems } from '../../redux/slices/homeSlice';
-
+import { refreshTokens } from '../../redux/slices/tokenSlice';
 
 function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
     const dispatch = useDispatch();
@@ -17,8 +16,6 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
     const [rentalTime, setRentalTime] = React.useState(0);
     const [selectedTimeUnit, setSelectedTimeUnit] = React.useState(0);
     const [isWarning, setIsWarning] = React.useState(false);
-
-    const { refreshTokens } = React.useContext(AppContext);
 
     const timeUnitList = ["min", "h"];
 
@@ -67,7 +64,7 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
             }
         } catch (error) {
             if (error.response.status === 403) {
-                await refreshTokens();
+                await dispatch(refreshTokens());
             }
             else {
                 alert('Data sending error!');

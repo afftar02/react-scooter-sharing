@@ -2,10 +2,9 @@ import React from 'react';
 import { UserScooterCard } from '../../components/UserScooterCard/UserScooterCard';
 import styles from "./User.module.scss";
 import axios from 'axios';
-import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserId, setAccess_token, setRefresh_token } from '../../redux/slices/tokenSlice';
+import { setUserId, setAccess_token, setRefresh_token, refreshTokens } from '../../redux/slices/tokenSlice';
 import { setUserItems, setUserName, setUserEmail } from '../../redux/slices/userSlice';
 
 export const User = () => {
@@ -13,8 +12,6 @@ export const User = () => {
 
   const { userId, access_token } = useSelector((state) => state.token);
   const { userItems, userName, userEmail } = useSelector((state) => state.user);
-
-  const { refreshTokens } = React.useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -34,7 +31,7 @@ export const User = () => {
       }
     } catch (error) {
       if (error.response.status === 403) {
-        await refreshTokens();
+        await dispatch(refreshTokens());
       }
       else {
         alert('Data loading error!');

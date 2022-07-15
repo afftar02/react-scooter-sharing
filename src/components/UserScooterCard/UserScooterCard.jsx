@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from "./UserScooterCard.module.scss";
-import { AppContext } from "../../App";
 import axios from 'axios';
 import { CountDown } from '../CountDown/CountDown';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserItems } from '../../redux/slices/userSlice';
+import { refreshTokens } from '../../redux/slices/tokenSlice';
 
 export const UserScooterCard = ({ id, imageUrl, battery, modelName, timeLeft }) => {
   const dispatch = useDispatch();
@@ -16,8 +16,6 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, timeLeft }) 
   
   const [locationName, setLocationName] = React.useState();
   const [locationDescription, setLocationDescription] = React.useState();
-
-  const { refreshTokens } = React.useContext(AppContext);
 
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
@@ -54,7 +52,7 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, timeLeft }) 
           dispatch(setUserItems(updatedUserScooters));
         } catch (error) {
           if (error.response.status === 403) {
-            await refreshTokens();
+            await dispatch(refreshTokens());
           }
           else {
             alert('Error when deleting scooter!');

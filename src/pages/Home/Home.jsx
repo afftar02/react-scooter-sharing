@@ -3,11 +3,11 @@ import React from 'react';
 import styles from "./Home.module.scss";
 import Card from "../../components/Card/Card";
 import DetailedCard from "../../components/DetailedCard/DetailedCard";
-import { AppContext } from "../../App";
 import { useNavigate } from 'react-router-dom';
 import CardSkeleton from '../../components/Card/CardSkeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { setItems } from '../../redux/slices/homeSlice';
+import { refreshTokens } from '../../redux/slices/tokenSlice';
 
 function Home() {
     const dispatch = useDispatch();
@@ -17,8 +17,6 @@ function Home() {
 
     const [itemChosen, setItemChosen] = React.useState();
     const [isLoading, setIsLoading] = React.useState(true);
-
-    const { refreshTokens } = React.useContext(AppContext);
 
     const navigate = useNavigate();
 
@@ -35,7 +33,7 @@ function Home() {
             dispatch(setItems(scootersResponse.data));
         } catch (error) {
             if (error.response.status === 403) {
-                await refreshTokens();
+                await dispatch(refreshTokens());
             }
             else {
                 alert('Data loading error!');
