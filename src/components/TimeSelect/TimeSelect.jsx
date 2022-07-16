@@ -1,11 +1,17 @@
 import React from 'react';
 import styles from "./TimeSelect.module.scss";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedTimeUnit } from '../../redux/slices/detailedCardSlice';
 
-export const TimeSelect = ({ selectedTimeUnit, setSelectedTimeUnit, timeUnitList }) => {
+export const TimeSelect = () => {
+    const dispatch = useDispatch();
+
+    const { selectedTimeUnit, timeUnitList } = useSelector((state) => state.detailedCard);
+
     const [open, setOpen] = React.useState(false);
 
     const selectListItem = (index) => {
-        setSelectedTimeUnit(index);
+        dispatch(setSelectedTimeUnit(index));
         setOpen(false);
     }
 

@@ -1,62 +1,24 @@
 import React from "react";
 import styles from "./DetailedCard.module.scss";
-import axios from "axios";
 import { TimeSelect } from "../TimeSelect/TimeSelect";
 import { useDispatch, useSelector } from 'react-redux';
 import { setItems } from '../../redux/slices/homeSlice';
 import { refreshTokens } from '../../redux/slices/tokenSlice';
+import { setRentalTime, start } from '../../redux/slices/detailedCardSlice';
 
 function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
     const dispatch = useDispatch();
 
     const { items } = useSelector((state) => state.home);
+    const { rentalTime } = useSelector((state) => state.detailedCard);
 
-    const { userId, access_token } = useSelector((state) => state.token);
-
-    const [rentalTime, setRentalTime] = React.useState(0);
-    const [selectedTimeUnit, setSelectedTimeUnit] = React.useState(0);
     const [isWarning, setIsWarning] = React.useState(false);
-
-    const timeUnitList = ["min", "h"];
 
     const onStartClick = async () => {
         try {
             if (rentalTime && Number.isInteger(parseInt(rentalTime)) && rentalTime >= 1) {
-                const scooterResponse = await axios({
-                    method: 'get',
-                    url: `http://localhost:8080/scooter-sharing/api/scooters/${id}`,
-                    headers: {
-                        Authorization: access_token
-                    }
-                });
-                let countedRentalTime = timeUnitList[selectedTimeUnit] === "min" ? rentalTime : (rentalTime * 60);//time in min
-                await axios({
-                    method: 'put',
-                    url: `http://localhost:8080/scooter-sharing/api/scooters`,
-                    headers: {
-                        Authorization: access_token
-                    },
-                    data: {
-                        id, "location": { "id": scooterResponse.data.location.id, "name": location.name, "description": location.description }, battery, imageUrl, modelName, "booked": true, "timeLeft": countedRentalTime
-                    }
-                });
-                const userResponse = await axios({
-                    method: 'get',
-                    url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
-                    headers: {
-                        Authorization: access_token
-                    }
-                });
-                axios({
-                    method: 'put',
-                    url: `http://localhost:8080/scooter-sharing/api/user`,
-                    headers: {
-                        Authorization: access_token
-                    },
-                    data: {
-                        "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data]
-                    }
-                });
+                const info = { id, imageUrl, modelName, location, battery };
+                dispatch(start(info));
                 dispatch(setItems(items.filter(item => item.id !== id)));
             }
             else {
@@ -91,11 +53,8 @@ function DetailedCard({ id, imageUrl, modelName, location, battery, onClose }) {
                     </div>
                     <div className={styles.inputBlock}>
                         <div className={styles.input}>
-                            <input onChange={(event) => setRentalTime(event.target.value)} type="text" placeholder="Enter rental time" className={isWarning ? styles.warning : ' '}/>
-                            <TimeSelect
-                                selectedTimeUnit={selectedTimeUnit}
-                                setSelectedTimeUnit={setSelectedTimeUnit}
-                                timeUnitList={timeUnitList} />
+                            <input onChange={(event) => dispatch(setRentalTime(event.target.value))} type="text" placeholder="Enter rental time" className={isWarning ? styles.warning : ' '} />
+                            <TimeSelect />
                         </div>
                         <div className={styles.buttonStartContainer}>
                             <button onClick={onStartClick}>Start<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">

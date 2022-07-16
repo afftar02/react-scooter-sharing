@@ -1,55 +1,26 @@
 import React from 'react';
 import styles from "./UserScooterCard.module.scss";
-import axios from 'axios';
 import { CountDown } from '../CountDown/CountDown';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserItems } from '../../redux/slices/userSlice';
 import { refreshTokens } from '../../redux/slices/tokenSlice';
+import { setLocationName, setLocationDescription, stop } from '../../redux/slices/userScooterCardSlice';
 
 export const UserScooterCard = ({ id, imageUrl, battery, modelName, timeLeft }) => {
   const dispatch = useDispatch();
 
-  const { userId, access_token } = useSelector((state) => state.token);
+  const { locationName, locationDescription } = useSelector((state) => state.userScooterCard);
 
   const [isHiddenInputOpened, setIsHiddenInputOpened] = React.useState(false);
   const [isWarning, setIsWarning] = React.useState(false);
-  
-  const [locationName, setLocationName] = React.useState();
-  const [locationDescription, setLocationDescription] = React.useState();
 
   const onStopClick = async () => {
     if (isHiddenInputOpened) {
       if (locationName && locationDescription) {
         try {
-          await axios({
-            method: 'put',
-            url: `http://localhost:8080/scooter-sharing/api/scooters`,
-            headers: {
-              Authorization: access_token
-            },
-            data: {
-              id, "location": { "name": locationName, "description": locationDescription }, "booked": false, "timeLeft": 0
-            }
-          });
-          const userResponse = await axios({
-            method: 'get',
-            url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
-            headers: {
-              Authorization: access_token
-            }
-          });
-          const updatedUserScooters = userResponse.data.scooters.filter(scooter => scooter.id !== id);
-          await axios({
-            method: 'put',
-            url: `http://localhost:8080/scooter-sharing/api/user`,
-            headers: {
-              Authorization: access_token
-            },
-            data: {
-              "id": userId, "scooters": updatedUserScooters
-            }
-          });
-          dispatch(setUserItems(updatedUserScooters));
+          const info = { id, locationName, locationDescription };
+          const updatedUserScooters = await dispatch(stop(info));
+          dispatch(setUserItems(updatedUserScooters.payload));
         } catch (error) {
           if (error.response.status === 403) {
             await dispatch(refreshTokens());
@@ -87,8 +58,8 @@ export const UserScooterCard = ({ id, imageUrl, battery, modelName, timeLeft }) 
       <div className={styles.locationHiddenContainer}>
         <h4>Enter new location for scooter:</h4>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="Location name" onChange={(event) => setLocationName(event.target.value)} className={isWarning ? styles.warning : ' '} />
-          <textarea placeholder="Location description" onChange={(event) => setLocationDescription(event.target.value)} className={isWarning ? styles.warning : ' '} />
+          <input type="text" placeholder="Location name" onChange={(event) => dispatch(setLocationName(event.target.value))} className={isWarning ? styles.warning : ' '} />
+          <textarea placeholder="Location description" onChange={(event) => dispatch(setLocationDescription(event.target.value))} className={isWarning ? styles.warning : ' '} />
         </div>
       </div>
     </div>
