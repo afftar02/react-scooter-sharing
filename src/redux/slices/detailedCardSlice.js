@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const start = createAsyncThunk('detailedCard/start', async (info, { getState }) => {
+export const start = createAsyncThunk('detailedCard/start', async (info, { getState, dispatch }) => {
     const userId = getState().token.userId;
     const rentalTime = getState().detailedCard.rentalTime;
     const { id, imageUrl, modelName, location, battery } = info;
@@ -41,6 +41,7 @@ export const start = createAsyncThunk('detailedCard/start', async (info, { getSt
             "id": userId, "scooters": [...userResponse.data.scooters, scooterResponse.data]
         }
     });
+    dispatch(setDefaultState());
 })
 
 const initialState = {
@@ -59,9 +60,13 @@ const detailedCardSlice = createSlice({
         setSelectedTimeUnit(state, action) {
             state.selectedTimeUnit = action.payload;
         },
+        setDefaultState(state) {
+            state.rentalTime = initialState.rentalTime;
+            state.selectedTimeUnit = initialState.selectedTimeUnit;
+        },
     },
 });
 
-export const { setRentalTime, setSelectedTimeUnit } = detailedCardSlice.actions;
+export const { setRentalTime, setSelectedTimeUnit, setDefaultState } = detailedCardSlice.actions;
 
 export default detailedCardSlice.reducer;

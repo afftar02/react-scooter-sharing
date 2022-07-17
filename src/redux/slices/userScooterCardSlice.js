@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-export const stop = createAsyncThunk('userScooterCard/stop', async (info, { getState }) => {
+export const stop = createAsyncThunk('userScooterCard/stop', async (info, { getState, dispatch }) => {
     const userId = getState().token.userId;
     const { id, locationName, locationDescription } = info;
     
@@ -33,6 +33,7 @@ export const stop = createAsyncThunk('userScooterCard/stop', async (info, { getS
             "id": userId, "scooters": updatedUserScooters
         }
     });
+    dispatch(setDefaultState());
     return updatedUserScooters;
 })
 
@@ -51,9 +52,13 @@ const userScooterCardSlice = createSlice({
         setLocationDescription(state, action) {
             state.locationDescription = action.payload;
         },
+        setDefaultState(state) {
+            state.locationName = initialState.locationName;
+            state.locationDescription = initialState.locationDescription;
+        },
     },
 });
 
-export const { setLocationName, setLocationDescription } = userScooterCardSlice.actions;
+export const { setLocationName, setLocationDescription, setDefaultState } = userScooterCardSlice.actions;
 
 export default userScooterCardSlice.reducer;
