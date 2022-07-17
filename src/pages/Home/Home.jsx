@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import styles from "./Home.module.scss";
 import Card from "../../components/Card/Card";
@@ -6,13 +5,13 @@ import DetailedCard from "../../components/DetailedCard/DetailedCard";
 import { useNavigate } from 'react-router-dom';
 import CardSkeleton from '../../components/Card/CardSkeleton';
 import { useDispatch, useSelector } from 'react-redux';
-import { setItems } from '../../redux/slices/homeSlice';
+import { setItemsFromServer } from '../../redux/slices/homeSlice';
 import { refreshTokens } from '../../redux/slices/tokenSlice';
 
 function Home() {
     const dispatch = useDispatch();
 
-    const { userId, access_token } = useSelector((state) => state.token);
+    const { userId } = useSelector((state) => state.token);
     const { items } = useSelector((state) => state.home);
 
     const [itemChosen, setItemChosen] = React.useState();
@@ -20,17 +19,10 @@ function Home() {
 
     const navigate = useNavigate();
 
-    async function getItemsFromServer() {
+    async function getItems() {
         try {
-            const scootersResponse = await axios({
-                method: 'get',
-                url: `http://localhost:8080/scooter-sharing/api/scooters`,
-                headers: {
-                    Authorization: access_token
-                }
-            });
+            dispatch(setItemsFromServer());
             setIsLoading(false);
-            dispatch(setItems(scootersResponse.data));
         } catch (error) {
             if (error.response.status === 403) {
                 await dispatch(refreshTokens());
@@ -43,7 +35,7 @@ function Home() {
 
     React.useEffect(() => {
         if (userId) {
-            getItemsFromServer();
+            getItems();
         }
         else {
             navigate('/');

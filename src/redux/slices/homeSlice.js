@@ -1,4 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const setItemsFromServer = createAsyncThunk('home/setItemsFromServer', async (arg, { getState, dispatch }) => {
+    const scootersResponse = await axios({
+        method: 'get',
+        url: `http://localhost:8080/scooter-sharing/api/scooters`,
+        headers: {
+            Authorization: getState().token.access_token
+        }
+    });
+    dispatch(setItems(scootersResponse.data));
+})
 
 const initialState = {
     items: [],

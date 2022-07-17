@@ -1,34 +1,22 @@
 import React from 'react';
 import { UserScooterCard } from '../../components/UserScooterCard/UserScooterCard';
 import styles from "./User.module.scss";
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserId, setAccess_token, setRefresh_token, refreshTokens } from '../../redux/slices/tokenSlice';
-import { setUserItems, setUserName, setUserEmail } from '../../redux/slices/userSlice';
+import { getUserInfo } from '../../redux/slices/userSlice';
 
 export const User = () => {
   const dispatch = useDispatch();
 
-  const { userId, access_token } = useSelector((state) => state.token);
+  const { userId } = useSelector((state) => state.token);
   const { userItems, userName, userEmail } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
 
   async function getUserScooters() {
     try {
-      const userResponse = await axios({
-        method: 'get',
-        url: `http://localhost:8080/scooter-sharing/api/user/${userId}`,
-        headers: {
-          Authorization: access_token
-        }
-      });
-      dispatch(setUserName(userResponse.data.firstName + " " + userResponse.data.secondName));
-      dispatch(setUserEmail(userResponse.data.username));
-      if (userResponse.data.scooters.length > 0) {
-        dispatch(setUserItems(userResponse.data.scooters));
-      }
+      dispatch(getUserInfo());
     } catch (error) {
       if (error.response.status === 403) {
         await dispatch(refreshTokens());
